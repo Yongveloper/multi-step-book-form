@@ -40,40 +40,44 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
     <Container>
       <h2>1단계 - 도서 기본 정보</h2>
 
-      <div>
-        <label>도서명</label>
+      <Input.Group>
+        <Input.Label>도서명</Input.Label>
         <Input
           {...register('bookTitle', { required: '도서명을 입력해주세요' })}
           type="text"
           aria-invalid={!!errors.bookTitle}
         />
-        {errors.bookTitle && <ErrorText>{errors.bookTitle.message}</ErrorText>}
-      </div>
+        <Input.Description aria-invalid={!!errors.bookTitle}>
+          {errors.bookTitle?.message}
+        </Input.Description>
+      </Input.Group>
 
-      <div>
-        <label>저자</label>
+      <Input.Group>
+        <Input.Label>저자</Input.Label>
         <Input
           {...register('author', { required: '저자를 입력해주세요' })}
           type="text"
           aria-invalid={!!errors.author}
         />
-        {errors.author && <ErrorText>{errors.author.message}</ErrorText>}
-      </div>
+        <Input.Description aria-invalid={!!errors.author}>
+          {errors.author?.message}
+        </Input.Description>
+      </Input.Group>
 
-      <div>
-        <label>출판일</label>
+      <Input.Group>
+        <Input.Label>출판일</Input.Label>
         <Input
           {...register('publishDate', { required: '출판일을 입력해주세요' })}
           type="date"
           aria-invalid={!!errors.publishDate}
         />
-        {errors.publishDate && (
-          <ErrorText>{errors.publishDate.message}</ErrorText>
-        )}
-      </div>
+        <Input.Description aria-invalid={!!errors.publishDate}>
+          {errors.publishDate?.message}
+        </Input.Description>
+      </Input.Group>
 
-      <div>
-        <label>총 페이지 수</label>
+      <Input.Group>
+        <Input.Label>총 페이지 수</Input.Label>
         <Input
           {...register('totalPages', {
             required: '총 페이지 수를 입력해주세요',
@@ -83,13 +87,13 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
           type="number"
           aria-invalid={!!errors.totalPages}
         />
-        {errors.totalPages && (
-          <ErrorText>{errors.totalPages.message}</ErrorText>
-        )}
-      </div>
+        <Input.Description aria-invalid={!!errors.totalPages}>
+          {errors.totalPages?.message}
+        </Input.Description>
+      </Input.Group>
 
-      <div>
-        <label>독서 상태</label>
+      <Input.Group>
+        <Input.Label>독서 상태</Input.Label>
         <Select
           {...register('readingStatus', {
             required: '독서 상태를 선택해주세요',
@@ -102,13 +106,13 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
           <option value={BOOK_STATUS.READ}>읽음</option>
           <option value={BOOK_STATUS.HOLD}>보류 중</option>
         </Select>
-        {errors.readingStatus && (
-          <ErrorText>{errors.readingStatus.message}</ErrorText>
-        )}
-      </div>
+        <Input.Description aria-invalid={!!errors.readingStatus}>
+          {errors.readingStatus?.message}
+        </Input.Description>
+      </Input.Group>
 
-      <div>
-        <label>독서 시작일</label>
+      <Input.Group>
+        <Input.Label>독서 시작일</Input.Label>
         <Input
           {...register('startDate', {
             required: !shouldDisableStartDate
@@ -132,11 +136,13 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
           disabled={shouldDisableStartDate}
           aria-invalid={!!errors.startDate}
         />
-        {errors.startDate && <ErrorText>{errors.startDate.message}</ErrorText>}
-      </div>
+        <Input.Description aria-invalid={!!errors.startDate}>
+          {errors.startDate?.message}
+        </Input.Description>
+      </Input.Group>
 
-      <div>
-        <label>독서 종료일</label>
+      <Input.Group>
+        <Input.Label>독서 종료일</Input.Label>
         <Input
           {...register('endDate', {
             required: !shouldDisableEndDate
@@ -156,8 +162,10 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
           disabled={shouldDisableEndDate}
           aria-invalid={!!errors.endDate}
         />
-        {errors.endDate && <ErrorText>{errors.endDate.message}</ErrorText>}
-      </div>
+        <Input.Description aria-invalid={!!errors.endDate}>
+          {errors.endDate?.message}
+        </Input.Description>
+      </Input.Group>
 
       <Button type="button" onClick={handleNext}>
         다음 단계
@@ -189,11 +197,4 @@ const Select = styled.select`
   &[aria-invalid='true'] {
     border-color: red;
   }
-`;
-
-const ErrorText = styled.p`
-  color: red;
-  font-size: 12px;
-  margin-top: 4px;
-  margin-bottom: 0;
 `;
