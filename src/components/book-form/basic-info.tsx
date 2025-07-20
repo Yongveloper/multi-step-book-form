@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 import styled from '@emotion/styled';
 
 import { BOOK_STATUS } from '~/constants/book';
+import { FORM_FIELDS, READING_STATUS_OPTIONS } from '~/constants/form';
 import { IBookReviewForm } from '~/models/book';
 import { isDateAfter } from '~/utils/data';
 
@@ -20,9 +21,11 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
     trigger,
   } = useFormContext<IBookReviewForm>();
 
-  const readingStatus = watch('readingStatus');
-  const publishDate = watch('publishDate');
-  const endDate = watch('endDate');
+  const [readingStatus, publishDate, endDate] = watch([
+    FORM_FIELDS.READING_STATUS,
+    FORM_FIELDS.PUBLISH_DATE,
+    FORM_FIELDS.END_DATE,
+  ]);
 
   const shouldDisableStartDate =
     !readingStatus || readingStatus === BOOK_STATUS.WANT_TO_READ;
@@ -100,11 +103,11 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
           })}
           aria-invalid={!!errors.readingStatus}
         >
-          <option value="">선택</option>
-          <option value={BOOK_STATUS.WANT_TO_READ}>읽고 싶은 책</option>
-          <option value={BOOK_STATUS.READING}>읽는 중</option>
-          <option value={BOOK_STATUS.READ}>읽음</option>
-          <option value={BOOK_STATUS.HOLD}>보류 중</option>
+          {READING_STATUS_OPTIONS.map(({ value, label }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
         </Select>
         <Input.Description aria-invalid={!!errors.readingStatus}>
           {errors.readingStatus?.message}
