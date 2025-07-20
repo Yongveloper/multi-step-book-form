@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import { BOOK_STATUS } from '~/constants/book';
 import { IBookReviewForm } from '~/models/book';
+import { isDateAfter } from '~/utils/data';
 
 import Input from '../shared/input';
 
@@ -20,6 +21,8 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
   } = useFormContext<IBookReviewForm>();
 
   const readingStatus = watch('readingStatus');
+  const publishDate = watch('publishDate');
+  const endDate = watch('endDate');
 
   const shouldDisableStartDate =
     !readingStatus || readingStatus === BOOK_STATUS.WANT_TO_READ;
@@ -103,6 +106,7 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
           <ErrorText>{errors.readingStatus.message}</ErrorText>
         )}
       </div>
+
       <div>
         <label>독서 시작일</label>
         <Input
@@ -110,6 +114,19 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
             required: !shouldDisableStartDate
               ? '독서 시작일을 입력해주세요'
               : undefined,
+            validate: (value) => {
+              if (shouldDisableStartDate || !value) return true;
+
+              if (endDate && isDateAfter(value, endDate)) {
+                return '독서 시작일은 종료일보다 이전이어야 합니다';
+              }
+
+              if (publishDate && !isDateAfter(value, publishDate)) {
+                return '독서 시작일은 출판일 이후여야 합니다';
+              }
+
+              return true;
+            },
           })}
           type="date"
           disabled={shouldDisableStartDate}
@@ -125,6 +142,15 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
             required: !shouldDisableEndDate
               ? '독서 종료일을 입력해주세요'
               : undefined,
+            validate: (value) => {
+              if (shouldDisableEndDate || !value) return true;
+
+              if (publishDate && !isDateAfter(value, publishDate)) {
+                return '독서 종료일은 출판일 이후여야 합니다';
+              }
+
+              return true;
+            },
           })}
           type="date"
           disabled={shouldDisableEndDate}
@@ -153,21 +179,12 @@ const Button = styled.button`
   border: none;
   border-radius: 6px;
   cursor: pointer;
-
-  &:hover {
-    background-color: #007bff;
-  }
 `;
 
 const Select = styled.select`
   width: 100%;
   padding: 12px 16px;
   border-radius: 8px;
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
 
   &[aria-invalid='true'] {
     border-color: red;
@@ -178,4 +195,5 @@ const ErrorText = styled.p`
   color: red;
   font-size: 12px;
   margin-top: 4px;
+  margin-bottom: 0;
 `;
