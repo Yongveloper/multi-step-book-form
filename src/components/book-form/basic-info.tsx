@@ -125,14 +125,14 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
             required: !shouldDisableStartDate
               ? '독서 시작일을 입력해주세요'
               : undefined,
-            validate: (value) => {
-              if (shouldDisableStartDate || !value) return true;
+            validate: (startDate) => {
+              if (shouldDisableStartDate || !startDate) return true;
 
-              if (endDate && isDateAfter(value, endDate)) {
+              if (endDate && isDateAfter(startDate, endDate)) {
                 return '독서 시작일은 종료일보다 이전이어야 합니다';
               }
 
-              if (publishDate && !isDateAfter(value, publishDate)) {
+              if (publishDate && isDateAfter(publishDate, startDate)) {
                 return '독서 시작일은 출판일 이후여야 합니다';
               }
 
