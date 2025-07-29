@@ -1,4 +1,4 @@
-import { BOOK_STATUS } from './book';
+import { BOOK_STATUS } from './book.constant';
 
 export const LAST_STEP = 5;
 

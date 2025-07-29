@@ -2,9 +2,9 @@ import { useWatch } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
-import { BOOK_STATUS } from '~/constants/book';
+import { BOOK_STATUS } from '~/constants/book.constant';
 import { useDebounce } from '~/hooks/use-debounce';
-import { BookFormData } from '~/schemas/book-form';
+import { BookFormData } from '~/schemas/book-form.schema';
 
 const getStatusText = (status: string) => {
   switch (status) {

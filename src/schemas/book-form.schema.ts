@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { BOOK_STATUS } from '~/constants/book';
-import { FORM_FIELDS } from '~/constants/form';
+import { FORM_FIELDS } from '~/constants/book-form.constant';
+import { BOOK_STATUS } from '~/constants/book.constant';
 import { isDateAfter } from '~/utils/data';
 
 export const bookFormSchema = z

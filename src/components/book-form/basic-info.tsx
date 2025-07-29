@@ -2,9 +2,12 @@ import { useFormContext } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
-import { BOOK_STATUS } from '~/constants/book';
-import { FORM_FIELDS, READING_STATUS_OPTIONS } from '~/constants/form';
-import { BookFormData } from '~/schemas/book-form';
+import {
+  FORM_FIELDS,
+  READING_STATUS_OPTIONS,
+} from '~/constants/book-form.constant';
+import { BOOK_STATUS } from '~/constants/book.constant';
+import { BookFormData } from '~/schemas/book-form.schema';
 
 import Input from '../shared/input';
 

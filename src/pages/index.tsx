@@ -6,10 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import BasicInfo from '~/components/book-form/basic-info';
 import Preview from '~/components/book-form/preview';
-import { LAST_STEP } from '~/constants/form';
+import { LAST_STEP } from '~/constants/book-form.constant';
 import { useResize } from '~/hooks/use-resize';
 import { useStepNavigation } from '~/hooks/use-step-navigation';
-import { BookFormData, bookFormSchema } from '~/schemas/book-form';
+import { BookFormData, bookFormSchema } from '~/schemas/book-form.schema';
 
 export default function Home() {
   const methods = useForm<BookFormData>({
