@@ -1,7 +1,10 @@
 import { z } from 'zod';
 
-import { FORM_FIELDS } from '~/constants/book-form.constant';
-import { BOOK_STATUS } from '~/constants/book.constant';
+import {
+  BOOK_STATUS,
+  FORM_FIELDS,
+  RECOMMENDATION,
+} from '~/constants/book-form.constant';
 import { isDateAfter } from '~/utils/data';
 
 export const bookFormSchema = z
@@ -24,6 +27,15 @@ export const bookFormSchema = z
       }),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
+    recommendation: z
+      .enum(['', ...Object.values(RECOMMENDATION)] as const)
+      .refine((value) => value !== '', {
+        error: '추천 여부를 선택해주세요',
+      }),
+    rating: z
+      .number()
+      .min(0.5, '별점은 0.5 이상이어야 합니다')
+      .max(5, '별점은 5 이하여야 합니다'),
   })
   .refine(
     (data) => {

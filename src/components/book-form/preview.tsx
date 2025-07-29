@@ -2,7 +2,7 @@ import { useWatch } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
-import { BOOK_STATUS } from '~/constants/book.constant';
+import { BOOK_STATUS } from '~/constants/book-form.constant';
 import { useDebounce } from '~/hooks/use-debounce';
 import { BookFormData } from '~/schemas/book-form.schema';
 
@@ -29,7 +29,7 @@ export default function Preview() {
     <Container>
       <h3>📱 앱 미리보기</h3>
       <AppScreen>
-        <BookCard>
+        <Card>
           <div>📚</div>
           <div>
             <h4>{debouncedFormData.bookTitle || '도서명을 입력하세요'}</h4>
@@ -48,7 +48,20 @@ export default function Preview() {
               <p>종료: {debouncedFormData.endDate}</p>
             )}
           </div>
-        </BookCard>
+        </Card>
+        <Card>
+          <h4>평가</h4>
+          <p>
+            {debouncedFormData.rating
+              ? `별점: ${debouncedFormData.rating}점`
+              : '별점을 입력하세요'}
+          </p>
+          <p>
+            {debouncedFormData.recommendation
+              ? `추천 여부: ${debouncedFormData.recommendation}`
+              : '추천 여부를 선택하세요'}
+          </p>
+        </Card>
       </AppScreen>
     </Container>
   );
@@ -67,7 +80,7 @@ const AppScreen = styled.div`
   min-height: 300px;
 `;
 
-const BookCard = styled.div`
+const Card = styled.div`
   display: flex;
   gap: 12px;
   padding: 12px;

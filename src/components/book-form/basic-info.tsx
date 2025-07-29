@@ -3,19 +3,19 @@ import { useFormContext } from 'react-hook-form';
 import styled from '@emotion/styled';
 
 import {
+  BOOK_STATUS,
   FORM_FIELDS,
   READING_STATUS_OPTIONS,
 } from '~/constants/book-form.constant';
-import { BOOK_STATUS } from '~/constants/book.constant';
 import { BookFormData } from '~/schemas/book-form.schema';
 
 import Input from '../shared/input';
 
-interface BasicInfoProps {
+interface IBasicInfoProps {
   onNext: () => void;
 }
 
-export default function BasicInfo({ onNext }: BasicInfoProps) {
+export default function BasicInfo({ onNext }: IBasicInfoProps) {
   const {
     register,
     watch,
@@ -31,7 +31,17 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
     !readingStatus || readingStatus !== BOOK_STATUS.READ;
 
   const handleNext = async () => {
-    const isFormValid = await trigger();
+    const fieldsToValidate = [
+      FORM_FIELDS.BOOK_TITLE,
+      FORM_FIELDS.AUTHOR,
+      FORM_FIELDS.PUBLISH_DATE,
+      FORM_FIELDS.TOTAL_PAGES,
+      FORM_FIELDS.READING_STATUS,
+      FORM_FIELDS.START_DATE,
+      FORM_FIELDS.END_DATE,
+    ];
+
+    const isFormValid = await trigger(fieldsToValidate);
     if (isFormValid) {
       onNext();
     }

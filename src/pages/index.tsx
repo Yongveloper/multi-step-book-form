@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import BasicInfo from '~/components/book-form/basic-info';
+import BookEvaluation from '~/components/book-form/book-evaluation';
 import Preview from '~/components/book-form/preview';
 import { LAST_STEP } from '~/constants/book-form.constant';
 import { useResize } from '~/hooks/use-resize';
@@ -15,7 +16,7 @@ export default function Home() {
   const methods = useForm<BookFormData>({
     resolver: zodResolver(bookFormSchema),
   });
-  const { currentStep, goToNext } = useStepNavigation();
+  const { currentStep, goToNext, goToPrev } = useStepNavigation();
 
   const [isPreviewVisible, setIsPreviewVisible] = useState(false);
   const { width } = useResize();
@@ -33,6 +34,9 @@ export default function Home() {
             현재 단계: {currentStep}/{LAST_STEP}
           </div>
           {currentStep === 1 && <BasicInfo onNext={goToNext} />}
+          {currentStep === 2 && (
+            <BookEvaluation onNext={goToNext} onPrev={goToPrev} />
+          )}
         </FormSection>
 
         {isPreviewVisible && (

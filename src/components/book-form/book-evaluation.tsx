@@ -1,0 +1,222 @@
+import { useFormContext } from 'react-hook-form';
+
+import styled from '@emotion/styled';
+
+import {
+  FORM_FIELDS,
+  RECOMMENDATION_OPTIONS,
+} from '~/constants/book-form.constant';
+import { BookFormData } from '~/schemas/book-form.schema';
+
+import Input from '../shared/input';
+
+interface IBookEvaluationProps {
+  onNext: () => void;
+  onPrev: () => void;
+}
+
+export default function BookEvaluation({
+  onNext,
+  onPrev,
+}: IBookEvaluationProps) {
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+    trigger,
+  } = useFormContext<BookFormData>();
+
+  const [rating] = watch([FORM_FIELDS.RATING]);
+
+  const handleRatingClick = (value: number) => {
+    setValue(FORM_FIELDS.RATING, value);
+  };
+
+  const handleNext = async () => {
+    const fieldsToValidate = [FORM_FIELDS.RECOMMENDATION, FORM_FIELDS.RATING];
+
+    const isFormValid = await trigger(fieldsToValidate);
+    if (isFormValid) {
+      onNext();
+    }
+  };
+
+  return (
+    <Container>
+      <h2>2단계 - 도서 평가</h2>
+
+      <Input.Group>
+        <Input.Label>추천 여부</Input.Label>
+        <Select
+          {...register(FORM_FIELDS.RECOMMENDATION)}
+          aria-invalid={!!errors.recommendation}
+        >
+          {RECOMMENDATION_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </Select>
+        <Input.Description aria-invalid={!!errors.recommendation}>
+          {errors.recommendation?.message}
+        </Input.Description>
+      </Input.Group>
+
+      <Input.Group>
+        <Input.Label>별점</Input.Label>
+        <RatingContainer>
+          <StarRating>
+            {[1, 2, 3, 4, 5].map((starIndex) => (
+              <StarContainer key={starIndex}>
+                <StarButton
+                  type="button"
+                  onClick={() => handleRatingClick(starIndex - 0.5)}
+                  className={`half ${rating && starIndex - 0.5 <= rating ? 'active' : ''}`}
+                />
+                <StarButton
+                  type="button"
+                  onClick={() => handleRatingClick(starIndex)}
+                  className={`full ${rating && starIndex <= rating ? 'active' : ''}`}
+                />
+              </StarContainer>
+            ))}
+          </StarRating>
+        </RatingContainer>
+        <Input.Description aria-invalid={!!errors.rating}>
+          {errors.rating?.message}
+        </Input.Description>
+      </Input.Group>
+
+      <ButtonContainer>
+        <Button type="button" onClick={onPrev} variant="secondary">
+          이전 단계
+        </Button>
+        <Button type="button" onClick={handleNext}>
+          다음 단계
+        </Button>
+      </ButtonContainer>
+    </Container>
+  );
+}
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid black;
+
+  &[aria-invalid='true'] {
+    border-color: red;
+  }
+`;
+
+const RatingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const StarRating = styled.div`
+  display: flex;
+  gap: 2px;
+`;
+
+const StarContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+  
+  &::before {
+    content: '★';
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 24px;
+    color: #ddd;
+    z-index: 0;
+  }
+`;
+
+const StarButton = styled.button`
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  height: 100%;
+
+  &::before {
+    content: '★';
+    position: absolute;
+    top: 0;
+    font-size: 24px;
+    color: #ffc107;
+    transition: opacity 0.2s;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.half {
+    left: 0;
+    width: 50%;
+    z-index: 2;
+    overflow: hidden;
+    
+    &::before {
+      left: 0;
+      width: 200%;
+    }
+    
+    &:hover::before,
+    &.active::before {
+      opacity: 1;
+    }
+  }
+
+  &.full {
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    
+    &::before {
+      left: 0;
+    }
+    
+    &:hover::before,
+    &.active::before {
+      opacity: 1;
+    }
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+`;
+
+const Button = styled.button<{ variant?: 'secondary' }>`
+  padding: 12px 24px;
+  background-color: ${(props) =>
+    props.variant === 'secondary' ? '#6c757d' : '#007bff'};
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  flex: 1;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
