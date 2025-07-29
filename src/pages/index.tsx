@@ -7,7 +7,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import BasicInfo from '~/components/book-form/basic-info';
 import BookEvaluation from '~/components/book-form/book-evaluation';
 import Preview from '~/components/book-form/preview';
-import { LAST_STEP } from '~/constants/book-form.constant';
+import {
+  LAST_STEP,
+  STEP_VALIDATION_FIELDS,
+} from '~/constants/book-form.constant';
 import { useResize } from '~/hooks/use-resize';
 import { useStepNavigation } from '~/hooks/use-step-navigation';
 import { BookFormData, bookFormSchema } from '~/schemas/book-form.schema';
@@ -21,6 +24,15 @@ export default function Home() {
   const [isPreviewVisible, setIsPreviewVisible] = useState(false);
   const { width } = useResize();
 
+  const handleStepNext = async (step: keyof typeof STEP_VALIDATION_FIELDS) => {
+    const fieldsToValidate = STEP_VALIDATION_FIELDS[step];
+    const isFormValid = await methods.trigger(fieldsToValidate);
+
+    if (isFormValid) {
+      goToNext();
+    }
+  };
+
   useEffect(() => {
     setIsPreviewVisible(width ? width >= 1024 : false);
   }, [width]);
@@ -33,9 +45,12 @@ export default function Home() {
           <div>
             현재 단계: {currentStep}/{LAST_STEP}
           </div>
-          {currentStep === 1 && <BasicInfo onNext={goToNext} />}
+          {currentStep === 1 && <BasicInfo onNext={() => handleStepNext(1)} />}
           {currentStep === 2 && (
-            <BookEvaluation onNext={goToNext} onPrev={goToPrev} />
+            <BookEvaluation
+              onNext={() => handleStepNext(2)}
+              onPrev={goToPrev}
+            />
           )}
         </FormSection>
 

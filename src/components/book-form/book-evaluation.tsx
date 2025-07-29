@@ -24,22 +24,12 @@ export default function BookEvaluation({
     watch,
     setValue,
     formState: { errors },
-    trigger,
   } = useFormContext<BookFormData>();
 
   const [rating] = watch([FORM_FIELDS.RATING]);
 
   const handleRatingClick = (value: number) => {
     setValue(FORM_FIELDS.RATING, value);
-  };
-
-  const handleNext = async () => {
-    const fieldsToValidate = [FORM_FIELDS.RECOMMENDATION, FORM_FIELDS.RATING];
-
-    const isFormValid = await trigger(fieldsToValidate);
-    if (isFormValid) {
-      onNext();
-    }
   };
 
   return (
@@ -92,7 +82,7 @@ export default function BookEvaluation({
         <Button type="button" onClick={onPrev} variant="secondary">
           이전 단계
         </Button>
-        <Button type="button" onClick={handleNext}>
+        <Button type="button" onClick={onNext}>
           다음 단계
         </Button>
       </ButtonContainer>

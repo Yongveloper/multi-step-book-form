@@ -20,7 +20,6 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
     register,
     watch,
     formState: { errors },
-    trigger,
   } = useFormContext<BookFormData>();
 
   const [readingStatus] = watch([FORM_FIELDS.READING_STATUS]);
@@ -29,23 +28,6 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
     !readingStatus || readingStatus === BOOK_STATUS.WANT_TO_READ;
   const shouldDisableEndDate =
     !readingStatus || readingStatus !== BOOK_STATUS.READ;
-
-  const handleNext = async () => {
-    const fieldsToValidate = [
-      FORM_FIELDS.BOOK_TITLE,
-      FORM_FIELDS.AUTHOR,
-      FORM_FIELDS.PUBLISH_DATE,
-      FORM_FIELDS.TOTAL_PAGES,
-      FORM_FIELDS.READING_STATUS,
-      FORM_FIELDS.START_DATE,
-      FORM_FIELDS.END_DATE,
-    ];
-
-    const isFormValid = await trigger(fieldsToValidate);
-    if (isFormValid) {
-      onNext();
-    }
-  };
 
   return (
     <Container>
@@ -142,7 +124,7 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
         </Input.Description>
       </Input.Group>
 
-      <Button type="button" onClick={handleNext}>
+      <Button type="button" onClick={onNext}>
         다음 단계
       </Button>
     </Container>
