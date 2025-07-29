@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { BOOK_STATUS } from '~/constants/book';
 import { useDebounce } from '~/hooks/use-debounce';
-import { IBookReviewForm } from '~/models/book';
+import { BookFormData } from '~/schemas/book-form';
 
 const getStatusText = (status: string) => {
   switch (status) {
@@ -22,7 +22,7 @@ const getStatusText = (status: string) => {
 };
 
 export default function Preview() {
-  const formData = useWatch<IBookReviewForm>();
+  const formData = useWatch<BookFormData>();
   const debouncedFormData = useDebounce(formData, 500);
 
   return (

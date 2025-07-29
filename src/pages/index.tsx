@@ -2,16 +2,19 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import styled from '@emotion/styled';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import BasicInfo from '~/components/book-form/basic-info';
 import Preview from '~/components/book-form/preview';
 import { LAST_STEP } from '~/constants/form';
 import { useResize } from '~/hooks/use-resize';
 import { useStepNavigation } from '~/hooks/use-step-navigation';
-import { IBookReviewForm } from '~/models/book';
+import { BookFormData, bookFormSchema } from '~/schemas/book-form';
 
 export default function Home() {
-  const methods = useForm<IBookReviewForm>();
+  const methods = useForm<BookFormData>({
+    resolver: zodResolver(bookFormSchema),
+  });
   const { currentStep, goToNext } = useStepNavigation();
 
   const [isPreviewVisible, setIsPreviewVisible] = useState(false);
