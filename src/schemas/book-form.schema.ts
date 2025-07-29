@@ -33,7 +33,7 @@ export const bookFormSchema = z
         error: '추천 여부를 선택해주세요',
       }),
     rating: z
-      .number()
+      .number('별점을 선택해주세요')
       .min(0.5, '별점은 0.5 이상이어야 합니다')
       .max(5, '별점은 5 이하여야 합니다'),
   })
