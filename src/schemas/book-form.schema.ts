@@ -9,10 +9,10 @@ import { isDateAfter } from '~/utils/data';
 
 export const bookFormSchema = z
   .object({
-    bookTitle: z.string().min(1, { error: '도서명을 입력해주세요' }),
-    author: z.string().min(1, { error: '저자를 입력해주세요' }),
-    publishDate: z.string().min(1, { error: '출판일을 입력해주세요' }),
-    totalPages: z.coerce
+    [FORM_FIELDS.BOOK_TITLE]: z.string().min(1, { error: '도서명을 입력해주세요' }),
+    [FORM_FIELDS.AUTHOR]: z.string().min(1, { error: '저자를 입력해주세요' }),
+    [FORM_FIELDS.PUBLISH_DATE]: z.string().min(1, { error: '출판일을 입력해주세요' }),
+    [FORM_FIELDS.TOTAL_PAGES]: z.coerce
       .number<number>({
         error: (issue) =>
           issue.input === undefined
@@ -20,19 +20,19 @@ export const bookFormSchema = z
             : '숫자만 입력 가능합니다',
       })
       .min(1, '1 이상의 숫자를 입력해주세요'),
-    readingStatus: z
+    [FORM_FIELDS.READING_STATUS]: z
       .enum(['', ...Object.values(BOOK_STATUS)] as const)
       .refine((value) => value !== '', {
         error: '독서 상태를 선택해주세요',
       }),
-    startDate: z.string().optional(),
-    endDate: z.string().optional(),
-    recommendation: z
+    [FORM_FIELDS.START_DATE]: z.string().optional(),
+    [FORM_FIELDS.END_DATE]: z.string().optional(),
+    [FORM_FIELDS.RECOMMENDATION]: z
       .enum(['', ...Object.values(RECOMMENDATION)] as const)
       .refine((value) => value !== '', {
         error: '추천 여부를 선택해주세요',
       }),
-    rating: z
+    [FORM_FIELDS.RATING]: z
       .number('별점을 선택해주세요')
       .min(0.5, '별점은 0.5 이상이어야 합니다')
       .max(5, '별점은 5 이하여야 합니다'),
