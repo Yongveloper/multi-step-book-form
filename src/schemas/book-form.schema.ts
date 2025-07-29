@@ -9,13 +9,9 @@ import { isDateAfter } from '~/utils/data';
 
 export const bookFormSchema = z
   .object({
-    [FORM_FIELDS.BOOK_TITLE]: z
-      .string()
-      .min(1, { error: '도서명을 입력해주세요' }),
-    [FORM_FIELDS.AUTHOR]: z.string().min(1, { error: '저자를 입력해주세요' }),
-    [FORM_FIELDS.PUBLISH_DATE]: z
-      .string()
-      .min(1, { error: '출판일을 입력해주세요' }),
+    [FORM_FIELDS.BOOK_TITLE]: z.string().min(1, '도서명을 입력해주세요'),
+    [FORM_FIELDS.AUTHOR]: z.string().min(1, '저자를 입력해주세요'),
+    [FORM_FIELDS.PUBLISH_DATE]: z.string().min(1, '출판일을 입력해주세요'),
     [FORM_FIELDS.TOTAL_PAGES]: z.coerce
       .number<number>({
         error: (issue) =>
