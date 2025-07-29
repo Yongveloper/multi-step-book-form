@@ -22,6 +22,7 @@ export const FORM_FIELDS = {
   END_DATE: 'endDate',
   RECOMMENDATION: 'recommendation',
   RATING: 'rating',
+  REVIEW: 'review',
 } as const;
 
 export const READING_STATUS_OPTIONS = [
@@ -49,4 +50,5 @@ export const STEP_VALIDATION_FIELDS = {
     FORM_FIELDS.END_DATE,
   ],
   2: [FORM_FIELDS.RECOMMENDATION, FORM_FIELDS.RATING],
+  3: [FORM_FIELDS.REVIEW],
 } as const;

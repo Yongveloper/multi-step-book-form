@@ -50,17 +50,29 @@ export default function Preview() {
           </div>
         </Card>
         <Card>
-          <h4>평가</h4>
-          <p>
-            {debouncedFormData.rating
-              ? `별점: ${debouncedFormData.rating}점`
-              : '별점을 입력하세요'}
-          </p>
-          <p>
-            {debouncedFormData.recommendation
-              ? `추천 여부: ${debouncedFormData.recommendation}`
-              : '추천 여부를 선택하세요'}
-          </p>
+          <div>
+            <h4>평가</h4>
+            <p>
+              {debouncedFormData.rating
+                ? `별점: ${debouncedFormData.rating}점`
+                : '별점을 입력하세요'}
+            </p>
+            <p>
+              {debouncedFormData.recommendation
+                ? `추천 여부: ${debouncedFormData.recommendation}`
+                : '추천 여부를 선택하세요'}
+            </p>
+          </div>
+        </Card>
+        <Card>
+          <div>
+            <h4>독후감</h4>
+            <p>
+              {debouncedFormData.review
+                ? debouncedFormData.review
+                : '독후감을 입력하세요'}
+            </p>
+          </div>
         </Card>
       </AppScreen>
     </Container>

@@ -9,9 +9,13 @@ import { isDateAfter } from '~/utils/data';
 
 export const bookFormSchema = z
   .object({
-    [FORM_FIELDS.BOOK_TITLE]: z.string().min(1, { error: '도서명을 입력해주세요' }),
+    [FORM_FIELDS.BOOK_TITLE]: z
+      .string()
+      .min(1, { error: '도서명을 입력해주세요' }),
     [FORM_FIELDS.AUTHOR]: z.string().min(1, { error: '저자를 입력해주세요' }),
-    [FORM_FIELDS.PUBLISH_DATE]: z.string().min(1, { error: '출판일을 입력해주세요' }),
+    [FORM_FIELDS.PUBLISH_DATE]: z
+      .string()
+      .min(1, { error: '출판일을 입력해주세요' }),
     [FORM_FIELDS.TOTAL_PAGES]: z.coerce
       .number<number>({
         error: (issue) =>
@@ -36,6 +40,7 @@ export const bookFormSchema = z
       .number('별점을 선택해주세요')
       .min(0.5, '별점은 0.5 이상이어야 합니다')
       .max(5, '별점은 5 이하여야 합니다'),
+    [FORM_FIELDS.REVIEW]: z.string().optional(),
   })
   .refine(
     (data) => {
@@ -121,6 +126,22 @@ export const bookFormSchema = z
     {
       error: '독서 종료일은 출판일 이후여야 합니다',
       path: [FORM_FIELDS.END_DATE],
+    },
+  )
+  .refine(
+    (data) => {
+      if (data.rating === 1 || data.rating === 5) {
+        if (!data.review || data.review.trim().length < 100) {
+          return false;
+        }
+      }
+
+      return true;
+    },
+    {
+      error:
+        '별점이 1점 또는 5점인 경우 의견을 뒷받침하기 위해 최소 100자 이상 작성해주세요',
+      path: [FORM_FIELDS.REVIEW],
     },
   );
 

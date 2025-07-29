@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import BasicInfo from '~/components/book-form/basic-info';
 import BookEvaluation from '~/components/book-form/book-evaluation';
 import Preview from '~/components/book-form/preview';
+import Review from '~/components/book-form/review';
 import {
   LAST_STEP,
   STEP_VALIDATION_FIELDS,
@@ -49,6 +50,12 @@ export default function Home() {
           {currentStep === 2 && (
             <BookEvaluation
               onNext={() => handleStepNext(2)}
+              onPrev={goToPrev}
+            />
+          )}
+          {currentStep === 3 && (
+            <Review
+              onNext={() => handleStepNext(3)}
               onPrev={goToPrev}
             />
           )}
