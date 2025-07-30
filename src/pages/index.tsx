@@ -6,10 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import BasicInfo from '~/components/book-form/basic-info';
 import BookEvaluation from '~/components/book-form/book-evaluation';
 import { useBookFormNavigation } from '~/components/book-form/hooks/use-book-form-navigation';
-import { useResponsivePreview } from '~/components/book-form/hooks/use-responsive-preview';
 import Preview from '~/components/book-form/preview';
 import Review from '~/components/book-form/review';
 import { LAST_STEP } from '~/constants/book-form.constant';
+import { useBreakpointVisibility } from '~/hooks/use-breakpoint-visibility';
 import { BookFormData, bookFormSchema } from '~/schemas/book-form.schema';
 
 export default function Home() {
@@ -19,7 +19,7 @@ export default function Home() {
 
   const { currentStep, handleStepNext, handleStepPrev } =
     useBookFormNavigation(methods);
-  const isPreviewVisible = useResponsivePreview();
+  const isPreviewVisible = useBreakpointVisibility(1024);
 
   return (
     <Container>
