@@ -16,6 +16,15 @@ export const useBookFormNavigation = (methods: UseFormReturn<BookFormData>) => {
 
     if (isFormValid) {
       goToNext();
+      return;
+    }
+
+    const firstErrorField = fieldsToValidate.find(
+      (field) => field in methods.formState.errors,
+    );
+
+    if (firstErrorField) {
+      methods.setFocus(firstErrorField);
     }
   };
 
