@@ -9,6 +9,7 @@ import BookEvaluation from '~/components/book-form/book-evaluation';
 import Preview from '~/components/book-form/preview';
 import Review from '~/components/book-form/review';
 import {
+  FORM_FIELDS,
   LAST_STEP,
   STEP_VALIDATION_FIELDS,
 } from '~/constants/book-form.constant';
@@ -34,6 +35,20 @@ export default function Home() {
     }
   };
 
+  const handleStepPrev = (step: keyof typeof STEP_VALIDATION_FIELDS) => {
+    const fieldsToReset = STEP_VALIDATION_FIELDS[step];
+
+    fieldsToReset.forEach((field) => {
+      if (field === FORM_FIELDS.RATING) {
+        methods.setValue(field, 0);
+      } else {
+        methods.setValue(field, '');
+      }
+    });
+
+    goToPrev();
+  };
+
   useEffect(() => {
     setIsPreviewVisible(width ? width >= 1024 : false);
   }, [width]);
@@ -50,13 +65,13 @@ export default function Home() {
           {currentStep === 2 && (
             <BookEvaluation
               onNext={() => handleStepNext(2)}
-              onPrev={goToPrev}
+              onPrev={() => handleStepPrev(2)}
             />
           )}
           {currentStep === 3 && (
             <Review
               onNext={() => handleStepNext(3)}
-              onPrev={goToPrev}
+              onPrev={() => handleStepPrev(3)}
             />
           )}
         </FormSection>
