@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import styled from '@emotion/styled';
@@ -6,52 +5,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import BasicInfo from '~/components/book-form/basic-info';
 import BookEvaluation from '~/components/book-form/book-evaluation';
+import { useBookFormNavigation } from '~/components/book-form/hooks/use-book-form-navigation';
+import { useResponsivePreview } from '~/components/book-form/hooks/use-responsive-preview';
 import Preview from '~/components/book-form/preview';
 import Review from '~/components/book-form/review';
-import {
-  FORM_FIELDS,
-  LAST_STEP,
-  STEP_VALIDATION_FIELDS,
-} from '~/constants/book-form.constant';
-import { useResize } from '~/hooks/use-resize';
-import { useStepNavigation } from '~/hooks/use-step-navigation';
+import { LAST_STEP } from '~/constants/book-form.constant';
 import { BookFormData, bookFormSchema } from '~/schemas/book-form.schema';
 
 export default function Home() {
   const methods = useForm<BookFormData>({
     resolver: zodResolver(bookFormSchema),
   });
-  const { currentStep, goToNext, goToPrev } = useStepNavigation();
 
-  const [isPreviewVisible, setIsPreviewVisible] = useState(false);
-  const { width } = useResize();
-
-  const handleStepNext = async (step: keyof typeof STEP_VALIDATION_FIELDS) => {
-    const fieldsToValidate = STEP_VALIDATION_FIELDS[step];
-    const isFormValid = await methods.trigger(fieldsToValidate);
-
-    if (isFormValid) {
-      goToNext();
-    }
-  };
-
-  const handleStepPrev = (step: keyof typeof STEP_VALIDATION_FIELDS) => {
-    const fieldsToReset = STEP_VALIDATION_FIELDS[step];
-
-    fieldsToReset.forEach((field) => {
-      if (field === FORM_FIELDS.RATING) {
-        methods.setValue(field, 0);
-      } else {
-        methods.setValue(field, '');
-      }
-    });
-
-    goToPrev();
-  };
-
-  useEffect(() => {
-    setIsPreviewVisible(width ? width >= 1024 : false);
-  }, [width]);
+  const { currentStep, handleStepNext, handleStepPrev } =
+    useBookFormNavigation(methods);
+  const isPreviewVisible = useResponsivePreview();
 
   return (
     <Container>
