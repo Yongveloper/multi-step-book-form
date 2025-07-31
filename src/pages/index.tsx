@@ -1,4 +1,4 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,15 +8,25 @@ import BookEvaluation from '~/components/book-form/book-evaluation';
 import { useBookFormNavigation } from '~/components/book-form/hooks/use-book-form-navigation';
 import Preview from '~/components/book-form/preview';
 import Review from '~/components/book-form/review';
-import { FORM_DEFAULT_VALUES, LAST_STEP } from '~/constants/book-form.constant';
+import {
+  FORM_DEFAULT_VALUES,
+  LAST_STEP,
+  STORAGE_KEY,
+} from '~/constants/book-form.constant';
 import { useBreakpointVisibility } from '~/hooks/use-breakpoint-visibility';
+import { useFormWithPersistence } from '~/hooks/use-form-with-persistence';
 import { BookFormData, bookFormSchema } from '~/schemas/book-form.schema';
 
 export default function Home() {
-  const methods = useForm<BookFormData>({
-    resolver: zodResolver(bookFormSchema),
-    defaultValues: FORM_DEFAULT_VALUES,
-  });
+  const methods = useFormWithPersistence<BookFormData>(
+    {
+      resolver: zodResolver(bookFormSchema),
+      defaultValues: FORM_DEFAULT_VALUES,
+    },
+    {
+      storageKey: STORAGE_KEY,
+    },
+  );
 
   const { currentStep, handleStepNext, handleStepPrev } =
     useBookFormNavigation(methods);

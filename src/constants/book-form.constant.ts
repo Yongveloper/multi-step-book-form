@@ -1,5 +1,7 @@
 export const LAST_STEP = 5;
 
+export const STORAGE_KEY = 'book-form-data';
+
 export const BOOK_STATUS = {
   READING: 'reading',
   WANT_TO_READ: 'want_to_read',
