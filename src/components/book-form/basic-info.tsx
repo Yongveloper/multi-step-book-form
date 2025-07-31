@@ -9,6 +9,7 @@ import {
 } from '~/constants/book-form.constant';
 import { BookFormData } from '~/schemas/book-form.schema';
 
+import Button from '../shared/button';
 import Input from '../shared/input';
 
 interface IBasicInfoProps {
@@ -135,15 +136,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-`;
-
-const Button = styled.button`
-  padding: 12px 24px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
 `;
 
 const Select = styled.select`

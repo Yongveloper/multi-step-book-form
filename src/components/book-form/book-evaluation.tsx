@@ -8,6 +8,7 @@ import {
 } from '~/constants/book-form.constant';
 import { BookFormData } from '~/schemas/book-form.schema';
 
+import Button from '../shared/button';
 import Input from '../shared/input';
 
 interface IBookEvaluationProps {
@@ -78,14 +79,14 @@ export default function BookEvaluation({
         </Input.Description>
       </Input.Group>
 
-      <ButtonContainer>
+      <Button.Group>
         <Button type="button" onClick={onPrev} variant="secondary">
           이전 단계
         </Button>
         <Button type="button" onClick={onNext}>
           다음 단계
         </Button>
-      </ButtonContainer>
+      </Button.Group>
     </Container>
   );
 }
@@ -124,7 +125,7 @@ const StarContainer = styled.div`
   width: 24px;
   height: 24px;
   font-size: 24px;
-  
+
   &::before {
     content: '★';
     position: absolute;
@@ -162,12 +163,12 @@ const StarButton = styled.button`
     width: 50%;
     z-index: 2;
     overflow: hidden;
-    
+
     &::before {
       left: 0;
       width: 200%;
     }
-    
+
     &:hover::before,
     &.active::before {
       opacity: 1;
@@ -178,35 +179,14 @@ const StarButton = styled.button`
     left: 0;
     width: 100%;
     z-index: 1;
-    
+
     &::before {
       left: 0;
     }
-    
+
     &:hover::before,
     &.active::before {
       opacity: 1;
     }
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-`;
-
-const Button = styled.button<{ variant?: 'secondary' }>`
-  padding: 12px 24px;
-  background-color: ${(props) =>
-    props.variant === 'secondary' ? '#6c757d' : '#007bff'};
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  flex: 1;
-
-  &:hover {
-    opacity: 0.9;
   }
 `;

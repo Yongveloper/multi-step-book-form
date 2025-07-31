@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { FORM_FIELDS } from '~/constants/book-form.constant';
 import { BookFormData } from '~/schemas/book-form.schema';
 
+import Button from '../shared/button';
 import Input from '../shared/input';
 
 interface IReviewProps {
@@ -42,14 +43,14 @@ export default function Review({ onNext, onPrev }: IReviewProps) {
         </Input.Description>
       </Input.Group>
 
-      <ButtonContainer>
+      <Button.Group>
         <Button type="button" onClick={onPrev} variant="secondary">
           이전 단계
         </Button>
         <Button type="button" onClick={onNext}>
           다음 단계
         </Button>
-      </ButtonContainer>
+      </Button.Group>
     </Container>
   );
 }
@@ -90,25 +91,4 @@ const ReviewInfo = styled.div`
 const CharacterCount = styled.span`
   font-size: 12px;
   color: #666;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-`;
-
-const Button = styled.button<{ variant?: 'secondary' }>`
-  padding: 12px 24px;
-  background-color: ${(props) =>
-    props.variant === 'secondary' ? '#6c757d' : '#007bff'};
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  flex: 1;
-
-  &:hover {
-    opacity: 0.9;
-  }
 `;
