@@ -1,25 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FieldValues, UseFormProps, useForm, useWatch } from 'react-hook-form';
 
 import { useDebounce } from './use-debounce';
+
+const loadStoredData = (storageKey: string) => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const stored = localStorage.getItem(storageKey);
+
+  return stored ? JSON.parse(stored) : null;
+};
 
 export function useFormWithPersistence<T extends FieldValues>(
   formOptions: UseFormProps<T> = {},
   { storageKey }: { storageKey: string },
 ) {
-  const loadStoredData = () => {
+  const [initialData] = useState(() => {
     if (typeof window === 'undefined') {
-      return null;
+      return formOptions.defaultValues;
     }
 
-    const stored = localStorage.getItem(storageKey);
-
-    return stored ? JSON.parse(stored) : null;
-  };
+    return loadStoredData(storageKey) ?? formOptions.defaultValues;
+  });
 
   const methods = useForm<T>({
     ...formOptions,
-    defaultValues: formOptions.defaultValues,
+    defaultValues: initialData,
   });
 
   const formData = useWatch({
@@ -34,7 +42,7 @@ export function useFormWithPersistence<T extends FieldValues>(
       return;
     }
 
-    const storedData = loadStoredData();
+    const storedData = loadStoredData(storageKey);
     if (storedData) {
       methods.reset({
         ...formOptions.defaultValues,
