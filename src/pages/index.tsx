@@ -8,13 +8,14 @@ import BookEvaluation from '~/components/book-form/book-evaluation';
 import { useBookFormNavigation } from '~/components/book-form/hooks/use-book-form-navigation';
 import Preview from '~/components/book-form/preview';
 import Review from '~/components/book-form/review';
-import { LAST_STEP } from '~/constants/book-form.constant';
+import { FORM_DEFAULT_VALUES, LAST_STEP } from '~/constants/book-form.constant';
 import { useBreakpointVisibility } from '~/hooks/use-breakpoint-visibility';
 import { BookFormData, bookFormSchema } from '~/schemas/book-form.schema';
 
 export default function Home() {
   const methods = useForm<BookFormData>({
     resolver: zodResolver(bookFormSchema),
+    defaultValues: FORM_DEFAULT_VALUES,
   });
 
   const { currentStep, handleStepNext, handleStepPrev } =

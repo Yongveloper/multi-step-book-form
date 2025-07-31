@@ -1,7 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
 
 import {
-  FORM_FIELDS,
+  FORM_DEFAULT_VALUES,
   STEP_VALIDATION_FIELDS,
 } from '~/constants/book-form.constant';
 import { useStepNavigation } from '~/hooks/use-step-navigation';
@@ -32,11 +32,9 @@ export const useBookFormNavigation = (methods: UseFormReturn<BookFormData>) => {
     const fieldsToReset = STEP_VALIDATION_FIELDS[step];
 
     fieldsToReset.forEach((field) => {
-      if (field === FORM_FIELDS.RATING) {
-        methods.setValue(field, 0);
-      } else {
-        methods.setValue(field, '');
-      }
+      methods.resetField(field, {
+        defaultValue: FORM_DEFAULT_VALUES[field],
+      });
     });
 
     goToPrev();
