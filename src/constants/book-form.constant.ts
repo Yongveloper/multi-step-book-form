@@ -25,6 +25,8 @@ export const FORM_FIELDS = {
   RECOMMENDATION: 'recommendation',
   RATING: 'rating',
   REVIEW: 'review',
+  QUOTES: 'quotes',
+  QUOTES_PAGE: 'quotesPage',
 } as const;
 
 export const READING_STATUS_OPTIONS = [
@@ -53,6 +55,7 @@ export const STEP_VALIDATION_FIELDS = {
   ],
   2: [FORM_FIELDS.RECOMMENDATION, FORM_FIELDS.RATING],
   3: [FORM_FIELDS.REVIEW],
+  4: [FORM_FIELDS.QUOTES, FORM_FIELDS.QUOTES_PAGE],
 } as const;
 
 export const FORM_DEFAULT_VALUES = {
@@ -66,4 +69,6 @@ export const FORM_DEFAULT_VALUES = {
   [FORM_FIELDS.RECOMMENDATION]: '',
   [FORM_FIELDS.RATING]: 0,
   [FORM_FIELDS.REVIEW]: '',
+  [FORM_FIELDS.QUOTES]: '',
+  [FORM_FIELDS.QUOTES_PAGE]: 0,
 } as const;

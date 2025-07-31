@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import BasicInfo from '~/components/book-form/basic-info';
 import BookEvaluation from '~/components/book-form/book-evaluation';
+import BookQuotes from '~/components/book-form/book-quotes';
 import { useBookFormNavigation } from '~/components/book-form/hooks/use-book-form-navigation';
 import Preview from '~/components/book-form/preview';
 import Review from '~/components/book-form/review';
@@ -51,6 +52,12 @@ export default function Home() {
             <Review
               onNext={() => handleStepNext(3)}
               onPrev={() => handleStepPrev(3)}
+            />
+          )}
+          {currentStep === 4 && (
+            <BookQuotes
+              onNext={() => handleStepNext(4)}
+              onPrev={() => handleStepPrev(4)}
             />
           )}
         </FormSection>

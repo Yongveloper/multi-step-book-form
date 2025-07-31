@@ -37,6 +37,15 @@ export const bookFormSchema = z
       .min(0.5, '별점은 0.5 이상이어야 합니다')
       .max(5, '별점은 5 이하여야 합니다'),
     [FORM_FIELDS.REVIEW]: z.string().optional(),
+    [FORM_FIELDS.QUOTES]: z.string().optional(),
+    [FORM_FIELDS.QUOTES_PAGE]: z.coerce
+      .number<number>({
+        error: (issue) =>
+          issue.input === undefined
+            ? '인용구 페이지 수를 입력해주세요'
+            : '숫자만 입력 가능합니다',
+      })
+      .min(1, '1 이상의 숫자를 입력해주세요'),
   })
   .refine(
     (data) => {
