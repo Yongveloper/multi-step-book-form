@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { FieldValues, UseFormProps, useForm } from 'react-hook-form';
+import { FieldValues, UseFormProps, useForm, useWatch } from 'react-hook-form';
 
 import { useDebounce } from './use-debounce';
 
@@ -22,8 +22,10 @@ export function useFormWithPersistence<T extends FieldValues>(
     defaultValues: formOptions.defaultValues,
   });
 
-  const watchedData = methods.watch();
-  const debouncedData = useDebounce(watchedData, 500);
+  const formData = useWatch({
+    control: methods.control,
+  });
+  const debouncedData = useDebounce(formData, 500);
 
   const previousDataRef = useRef('');
 
