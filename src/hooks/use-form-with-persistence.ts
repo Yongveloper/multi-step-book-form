@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { FieldValues, UseFormProps, useForm, useWatch } from 'react-hook-form';
 
-import { useDebounce } from './use-debounce';
-
 const loadStoredData = (storageKey: string) => {
   if (typeof window === 'undefined') {
     return null;
@@ -27,7 +25,6 @@ export function useFormWithPersistence<T extends FieldValues>(
   const formData = useWatch({
     control: methods.control,
   });
-  const debouncedData = useDebounce(formData, 500);
 
   const previousDataRef = useRef('');
 
@@ -57,15 +54,15 @@ export function useFormWithPersistence<T extends FieldValues>(
       return;
     }
 
-    if (debouncedData && Object.keys(debouncedData).length > 0) {
-      const currentDataString = JSON.stringify(debouncedData);
+    if (formData && Object.keys(formData).length > 0) {
+      const currentDataString = JSON.stringify(formData);
 
       if (currentDataString !== previousDataRef.current) {
         localStorage.setItem(storageKey, currentDataString);
         previousDataRef.current = currentDataString;
       }
     }
-  }, [debouncedData, storageKey, isMounted]);
+  }, [formData, storageKey, isMounted]);
 
   return {
     ...methods,
