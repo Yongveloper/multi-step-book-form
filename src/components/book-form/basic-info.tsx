@@ -1,4 +1,5 @@
-import { useFormContext } from 'react-hook-form';
+import { useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
@@ -19,16 +20,25 @@ interface IBasicInfoProps {
 export default function BasicInfo({ onNext }: IBasicInfoProps) {
   const {
     register,
-    watch,
+    resetField,
     formState: { errors },
   } = useFormContext<BookFormData>();
 
-  const [readingStatus] = watch([FORM_FIELDS.READING_STATUS]);
+  const readingStatus = useWatch({
+    name: FORM_FIELDS.READING_STATUS,
+  });
 
   const shouldDisableStartDate =
     !readingStatus || readingStatus === BOOK_STATUS.WANT_TO_READ;
   const shouldDisableEndDate =
     !readingStatus || readingStatus !== BOOK_STATUS.READ;
+
+  useEffect(() => {
+    if (!readingStatus || readingStatus === BOOK_STATUS.WANT_TO_READ) {
+      resetField(FORM_FIELDS.START_DATE);
+      resetField(FORM_FIELDS.END_DATE);
+    }
+  }, [readingStatus, resetField]);
 
   return (
     <Container>
