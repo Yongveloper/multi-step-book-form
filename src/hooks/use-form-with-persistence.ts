@@ -40,10 +40,15 @@ export function useFormWithPersistence<T extends FieldValues>(
 
     const storedData = loadStoredData(storageKey);
     if (storedData) {
-      methods.reset({
-        ...formOptions.defaultValues,
-        ...storedData,
-      });
+      methods.reset(
+        {
+          ...formOptions.defaultValues,
+          ...storedData,
+        },
+        {
+          keepDefaultValues: true,
+        },
+      );
     }
   }, [storageKey, methods, formOptions.defaultValues]);
 
