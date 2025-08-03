@@ -74,6 +74,20 @@ export default function Preview() {
             </p>
           </div>
         </Card>
+        {debouncedFormData.quotes && debouncedFormData.quotes.length > 0 && (
+          <Card>
+            <div>
+              <h4>인용구</h4>
+              {debouncedFormData.quotes.map((quote, index) => (
+                <div key={index} style={{ marginBottom: '8px' }}>
+                  <h5>인용구 #{index + 1}</h5>
+                  <p>{quote.content || '인용구 내용을 입력하세요'}</p>
+                  {quote.page && <p>페이지: {quote.page}</p>}
+                </div>
+              ))}
+            </div>
+          </Card>
+        )}
       </AppScreen>
     </Container>
   );
