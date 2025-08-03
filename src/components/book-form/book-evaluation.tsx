@@ -37,6 +37,13 @@ export default function BookEvaluation({
     <Container>
       <h2>2단계 - 도서 평가</h2>
 
+      <Input
+        type="hidden"
+        {...register(FORM_FIELDS.RATING, {
+          valueAsNumber: true,
+        })}
+      />
+
       <Input.Group>
         <Input.Label>추천 여부</Input.Label>
         <Select
