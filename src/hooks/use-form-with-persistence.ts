@@ -17,17 +17,11 @@ export function useFormWithPersistence<T extends FieldValues>(
   formOptions: UseFormProps<T> = {},
   { storageKey }: { storageKey: string },
 ) {
-  const [initialData] = useState(() => {
-    if (typeof window === 'undefined') {
-      return formOptions.defaultValues;
-    }
-
-    return loadStoredData(storageKey) ?? formOptions.defaultValues;
-  });
+  const [isMounted, setIsMounted] = useState(false);
 
   const methods = useForm<T>({
     ...formOptions,
-    defaultValues: initialData,
+    defaultValues: formOptions.defaultValues,
   });
 
   const formData = useWatch({
@@ -42,6 +36,8 @@ export function useFormWithPersistence<T extends FieldValues>(
       return;
     }
 
+    setIsMounted(true);
+
     const storedData = loadStoredData(storageKey);
     if (storedData) {
       methods.reset({
@@ -49,12 +45,10 @@ export function useFormWithPersistence<T extends FieldValues>(
         ...storedData,
       });
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [storageKey, methods, formOptions.defaultValues]);
 
   useEffect(() => {
-    if (typeof window === 'undefined') {
+    if (typeof window === 'undefined' || !isMounted) {
       return;
     }
 
@@ -66,7 +60,7 @@ export function useFormWithPersistence<T extends FieldValues>(
         previousDataRef.current = currentDataString;
       }
     }
-  }, [debouncedData, storageKey]);
+  }, [debouncedData, storageKey, isMounted]);
 
   return {
     ...methods,
