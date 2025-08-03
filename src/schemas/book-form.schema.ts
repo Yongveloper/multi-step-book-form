@@ -12,13 +12,8 @@ export const bookFormSchema = z
     [FORM_FIELDS.BOOK_TITLE]: z.string().min(1, '도서명을 입력해주세요'),
     [FORM_FIELDS.AUTHOR]: z.string().min(1, '저자를 입력해주세요'),
     [FORM_FIELDS.PUBLISH_DATE]: z.string().min(1, '출판일을 입력해주세요'),
-    [FORM_FIELDS.TOTAL_PAGES]: z.coerce
-      .number<number>({
-        error: (issue) =>
-          issue.input === undefined
-            ? '총 페이지 수를 입력해주세요'
-            : '숫자만 입력 가능합니다',
-      })
+    [FORM_FIELDS.TOTAL_PAGES]: z
+      .number('총 페이지 수를 입력해주세요')
       .min(1, '1 이상의 숫자를 입력해주세요'),
     [FORM_FIELDS.READING_STATUS]: z
       .enum(['', ...Object.values(BOOK_STATUS)] as const)
@@ -37,15 +32,14 @@ export const bookFormSchema = z
       .min(0.5, '별점은 0.5 이상이어야 합니다')
       .max(5, '별점은 5 이하여야 합니다'),
     [FORM_FIELDS.REVIEW]: z.string().optional(),
-    [FORM_FIELDS.QUOTES]: z.string().optional(),
-    [FORM_FIELDS.QUOTES_PAGE]: z.coerce
-      .number<number>({
-        error: (issue) =>
-          issue.input === undefined
-            ? '인용구 페이지 수를 입력해주세요'
-            : '숫자만 입력 가능합니다',
-      })
-      .min(1, '1 이상의 숫자를 입력해주세요'),
+    [FORM_FIELDS.QUOTES]: z
+      .array(
+        z.object({
+          content: z.string().min(1, '인용구를 입력해주세요'),
+          page: z.number().nullable(),
+        }),
+      )
+      .optional(),
   })
   .refine(
     (data) => {
@@ -148,6 +142,52 @@ export const bookFormSchema = z
         '별점이 1점 또는 5점인 경우 의견을 뒷받침하기 위해 최소 100자 이상 작성해주세요',
       path: [FORM_FIELDS.REVIEW],
     },
-  );
+  )
+  .superRefine((data, ctx) => {
+    if (!data.quotes || data.quotes.length === 0) {
+      return;
+    }
+
+    const requiresPageValidation = data.quotes.length >= 2;
+
+    data.quotes.forEach((quote, index) => {
+      if (requiresPageValidation && !quote.page) {
+        ctx.addIssue({
+          code: 'custom',
+          message: '인용구가 2개 이상일 때는 페이지 번호를 입력해주세요',
+          path: [FORM_FIELDS.QUOTES, index, 'page'],
+        });
+        return;
+      }
+
+      if (quote.page) {
+        if (!Number(quote.page)) {
+          ctx.addIssue({
+            code: 'custom',
+            message: '페이지 번호는 숫자만 입력 가능합니다',
+            path: [FORM_FIELDS.QUOTES, index, 'page'],
+          });
+          return;
+        }
+
+        if (quote.page < 1) {
+          ctx.addIssue({
+            code: 'custom',
+            message: '페이지 번호는 1 이상이어야 합니다',
+            path: [FORM_FIELDS.QUOTES, index, 'page'],
+          });
+          return;
+        }
+
+        if (data.totalPages && quote.page > data.totalPages) {
+          ctx.addIssue({
+            code: 'custom',
+            message: `페이지 번호는 총 페이지 수(${data.totalPages})보다 같거나 작아야 합니다`,
+            path: [FORM_FIELDS.QUOTES, index, 'page'],
+          });
+        }
+      }
+    });
+  });
 
 export type BookFormData = z.infer<typeof bookFormSchema>;

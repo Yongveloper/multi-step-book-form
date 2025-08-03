@@ -83,7 +83,9 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
       <Input.Group>
         <Input.Label>총 페이지 수</Input.Label>
         <Input
-          {...register(FORM_FIELDS.TOTAL_PAGES)}
+          {...register(FORM_FIELDS.TOTAL_PAGES, {
+            valueAsNumber: true,
+          })}
           type="number"
           aria-invalid={!!errors.totalPages}
         />

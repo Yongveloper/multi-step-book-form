@@ -1,4 +1,9 @@
+import { useFieldArray, useFormContext } from 'react-hook-form';
+
 import styled from '@emotion/styled';
+
+import { FORM_FIELDS } from '~/constants/book-form.constant';
+import { BookFormData } from '~/schemas/book-form.schema';
 
 import Button from '../shared/button';
 import Input from '../shared/input';
@@ -9,26 +14,79 @@ interface IBookQuotesProps {
 }
 
 export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<BookFormData>();
+
+  const { fields, append, remove } = useFieldArray({
+    name: FORM_FIELDS.QUOTES,
+  });
+
+  const handleAddQuote = () => {
+    append({ content: '', page: null });
+  };
+
+  const handleRemoveQuote = (index: number) => {
+    remove(index);
+  };
+
   return (
     <div>
       <h2>4단계 - 인용구</h2>
-
       <Container>
-        <Top>
-          <h3>인용구 #1</h3>
-          <Button>삭제</Button>
-        </Top>
+        {fields.map((field, index) => (
+          <Card key={field.id}>
+            <Top>
+              <h3>인용구 #{index + 1}</h3>
+              {fields.length > 1 && (
+                <Button type="button" onClick={() => handleRemoveQuote(index)}>
+                  삭제
+                </Button>
+              )}
+            </Top>
 
-        <div>
-          <h4>인용구 내용</h4>
-          <Textarea placeholder="인용구를 입력하세요." />
-        </div>
+            <div>
+              <h4>
+                인용구 내용 <Required>*</Required>
+              </h4>
+              <Textarea
+                placeholder="인용구를 입력하세요."
+                {...register(`${FORM_FIELDS.QUOTES}.${index}.content`)}
+                aria-invalid={!!errors.quotes?.[index]?.content}
+              />
+              {errors.quotes?.[index]?.content && (
+                <ErrorMessage>
+                  {errors.quotes[index].content.message}
+                </ErrorMessage>
+              )}
+            </div>
 
-        <div>
-          <h4>페이지 번호</h4>
-          <Input type="number" style={{ width: 100 }} />
-        </div>
+            {fields.length > 1 && (
+              <div>
+                <h4>
+                  페이지 번호 <Required>*</Required>
+                </h4>
+                <Input
+                  type="number"
+                  style={{ width: 100 }}
+                  {...register(`${FORM_FIELDS.QUOTES}.${index}.page`, {
+                    valueAsNumber: true,
+                  })}
+                  aria-invalid={!!errors.quotes?.[index]?.page}
+                />
+                {errors.quotes?.[index]?.page && (
+                  <ErrorMessage>
+                    {errors.quotes[index].page.message}
+                  </ErrorMessage>
+                )}
+              </div>
+            )}
+          </Card>
+        ))}
       </Container>
+
+      <AddQuoteButton onClick={handleAddQuote}>+ 인용구 추가</AddQuoteButton>
 
       <Button.Group>
         <Button type="button" onClick={onPrev} variant="secondary">
@@ -43,6 +101,12 @@ export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
 }
 
 const Container = styled.div`
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 0 16px;
+`;
+
+const Card = styled.div`
   display: flex;
   flex-direction: column;
   padding: 16px;
@@ -83,4 +147,23 @@ const Textarea = styled.textarea`
     outline: none;
     border-color: #007bff;
   }
+`;
+
+const AddQuoteButton = styled(Button)`
+  width: 100%;
+  margin-top: 16px;
+  background-color: #dfebf7;
+  color: #007bff;
+  margin-bottom: 16px;
+  border: 2px dashed #007bff;
+`;
+
+const Required = styled.span`
+  color: red;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
 `;
