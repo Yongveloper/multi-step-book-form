@@ -2,9 +2,9 @@ import { useWatch } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
-import { BOOK_STATUS } from '~/constants/book';
+import { BOOK_STATUS } from '~/constants/book-form.constant';
 import { useDebounce } from '~/hooks/use-debounce';
-import { IBookReviewForm } from '~/models/book';
+import { BookFormData } from '~/schemas/book-form.schema';
 
 const getStatusText = (status: string) => {
   switch (status) {
@@ -22,14 +22,14 @@ const getStatusText = (status: string) => {
 };
 
 export default function Preview() {
-  const formData = useWatch<IBookReviewForm>();
+  const formData = useWatch<BookFormData>();
   const debouncedFormData = useDebounce(formData, 500);
 
   return (
     <Container>
       <h3>📱 앱 미리보기</h3>
       <AppScreen>
-        <BookCard>
+        <Card>
           <div>📚</div>
           <div>
             <h4>{debouncedFormData.bookTitle || '도서명을 입력하세요'}</h4>
@@ -48,7 +48,32 @@ export default function Preview() {
               <p>종료: {debouncedFormData.endDate}</p>
             )}
           </div>
-        </BookCard>
+        </Card>
+        <Card>
+          <div>
+            <h4>평가</h4>
+            <p>
+              {debouncedFormData.rating
+                ? `별점: ${debouncedFormData.rating}점`
+                : '별점을 입력하세요'}
+            </p>
+            <p>
+              {debouncedFormData.recommendation
+                ? `추천 여부: ${debouncedFormData.recommendation}`
+                : '추천 여부를 선택하세요'}
+            </p>
+          </div>
+        </Card>
+        <Card>
+          <div>
+            <h4>독후감</h4>
+            <p>
+              {debouncedFormData.review
+                ? debouncedFormData.review
+                : '독후감을 입력하세요'}
+            </p>
+          </div>
+        </Card>
       </AppScreen>
     </Container>
   );
@@ -67,7 +92,7 @@ const AppScreen = styled.div`
   min-height: 300px;
 `;
 
-const BookCard = styled.div`
+const Card = styled.div`
   display: flex;
   gap: 12px;
   padding: 12px;

@@ -2,42 +2,32 @@ import { useFormContext } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
-import { BOOK_STATUS } from '~/constants/book';
-import { FORM_FIELDS, READING_STATUS_OPTIONS } from '~/constants/form';
-import { IBookReviewForm } from '~/models/book';
-import { isDateAfter } from '~/utils/data';
+import {
+  BOOK_STATUS,
+  FORM_FIELDS,
+  READING_STATUS_OPTIONS,
+} from '~/constants/book-form.constant';
+import { BookFormData } from '~/schemas/book-form.schema';
 
 import Input from '../shared/input';
 
-interface BasicInfoProps {
+interface IBasicInfoProps {
   onNext: () => void;
 }
 
-export default function BasicInfo({ onNext }: BasicInfoProps) {
+export default function BasicInfo({ onNext }: IBasicInfoProps) {
   const {
     register,
     watch,
     formState: { errors },
-    trigger,
-  } = useFormContext<IBookReviewForm>();
+  } = useFormContext<BookFormData>();
 
-  const [readingStatus, publishDate, endDate] = watch([
-    FORM_FIELDS.READING_STATUS,
-    FORM_FIELDS.PUBLISH_DATE,
-    FORM_FIELDS.END_DATE,
-  ]);
+  const [readingStatus] = watch([FORM_FIELDS.READING_STATUS]);
 
   const shouldDisableStartDate =
     !readingStatus || readingStatus === BOOK_STATUS.WANT_TO_READ;
   const shouldDisableEndDate =
     !readingStatus || readingStatus !== BOOK_STATUS.READ;
-
-  const handleNext = async () => {
-    const isFormValid = await trigger();
-    if (isFormValid) {
-      onNext();
-    }
-  };
 
   return (
     <Container>
@@ -46,9 +36,7 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
       <Input.Group>
         <Input.Label>도서명</Input.Label>
         <Input
-          {...register(FORM_FIELDS.BOOK_TITLE, {
-            required: '도서명을 입력해주세요',
-          })}
+          {...register(FORM_FIELDS.BOOK_TITLE)}
           type="text"
           aria-invalid={!!errors.bookTitle}
         />
@@ -60,7 +48,7 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
       <Input.Group>
         <Input.Label>저자</Input.Label>
         <Input
-          {...register(FORM_FIELDS.AUTHOR, { required: '저자를 입력해주세요' })}
+          {...register(FORM_FIELDS.AUTHOR)}
           type="text"
           aria-invalid={!!errors.author}
         />
@@ -72,9 +60,7 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
       <Input.Group>
         <Input.Label>출판일</Input.Label>
         <Input
-          {...register(FORM_FIELDS.PUBLISH_DATE, {
-            required: '출판일을 입력해주세요',
-          })}
+          {...register(FORM_FIELDS.PUBLISH_DATE)}
           type="date"
           aria-invalid={!!errors.publishDate}
         />
@@ -86,11 +72,7 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
       <Input.Group>
         <Input.Label>총 페이지 수</Input.Label>
         <Input
-          {...register(FORM_FIELDS.TOTAL_PAGES, {
-            required: '총 페이지 수를 입력해주세요',
-            min: { value: 1, message: '1 이상의 숫자를 입력해주세요' },
-            pattern: { value: /^\d+$/, message: '숫자만 입력 가능합니다' },
-          })}
+          {...register(FORM_FIELDS.TOTAL_PAGES)}
           type="number"
           aria-invalid={!!errors.totalPages}
         />
@@ -102,9 +84,7 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
       <Input.Group>
         <Input.Label>독서 상태</Input.Label>
         <Select
-          {...register(FORM_FIELDS.READING_STATUS, {
-            required: '독서 상태를 선택해주세요',
-          })}
+          {...register(FORM_FIELDS.READING_STATUS)}
           aria-invalid={!!errors.readingStatus}
         >
           {READING_STATUS_OPTIONS.map(({ value, label }) => (
@@ -121,24 +101,7 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
       <Input.Group>
         <Input.Label>독서 시작일</Input.Label>
         <Input
-          {...register(FORM_FIELDS.START_DATE, {
-            required: !shouldDisableStartDate
-              ? '독서 시작일을 입력해주세요'
-              : undefined,
-            validate: (startDate) => {
-              if (shouldDisableStartDate || !startDate) return true;
-
-              if (endDate && isDateAfter(startDate, endDate)) {
-                return '독서 시작일은 종료일보다 이전이어야 합니다';
-              }
-
-              if (publishDate && isDateAfter(publishDate, startDate)) {
-                return '독서 시작일은 출판일 이후여야 합니다';
-              }
-
-              return true;
-            },
-          })}
+          {...register(FORM_FIELDS.START_DATE)}
           type="date"
           disabled={shouldDisableStartDate}
           aria-invalid={!!errors.startDate}
@@ -151,20 +114,7 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
       <Input.Group>
         <Input.Label>독서 종료일</Input.Label>
         <Input
-          {...register(FORM_FIELDS.END_DATE, {
-            required: !shouldDisableEndDate
-              ? '독서 종료일을 입력해주세요'
-              : undefined,
-            validate: (value) => {
-              if (shouldDisableEndDate || !value) return true;
-
-              if (publishDate && !isDateAfter(value, publishDate)) {
-                return '독서 종료일은 출판일 이후여야 합니다';
-              }
-
-              return true;
-            },
-          })}
+          {...register(FORM_FIELDS.END_DATE)}
           type="date"
           disabled={shouldDisableEndDate}
           aria-invalid={!!errors.endDate}
@@ -174,7 +124,7 @@ export default function BasicInfo({ onNext }: BasicInfoProps) {
         </Input.Description>
       </Input.Group>
 
-      <Button type="button" onClick={handleNext}>
+      <Button type="button" onClick={onNext}>
         다음 단계
       </Button>
     </Container>

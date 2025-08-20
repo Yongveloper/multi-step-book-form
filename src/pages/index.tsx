@@ -1,25 +1,26 @@
-import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import styled from '@emotion/styled';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import BasicInfo from '~/components/book-form/basic-info';
+import BookEvaluation from '~/components/book-form/book-evaluation';
+import { useBookFormNavigation } from '~/components/book-form/hooks/use-book-form-navigation';
 import Preview from '~/components/book-form/preview';
-import { LAST_STEP } from '~/constants/form';
-import { useResize } from '~/hooks/use-resize';
-import { useStepNavigation } from '~/hooks/use-step-navigation';
-import { IBookReviewForm } from '~/models/book';
+import Review from '~/components/book-form/review';
+import { FORM_DEFAULT_VALUES, LAST_STEP } from '~/constants/book-form.constant';
+import { useBreakpointVisibility } from '~/hooks/use-breakpoint-visibility';
+import { BookFormData, bookFormSchema } from '~/schemas/book-form.schema';
 
 export default function Home() {
-  const methods = useForm<IBookReviewForm>();
-  const { currentStep, goToNext } = useStepNavigation();
+  const methods = useForm<BookFormData>({
+    resolver: zodResolver(bookFormSchema),
+    defaultValues: FORM_DEFAULT_VALUES,
+  });
 
-  const [isPreviewVisible, setIsPreviewVisible] = useState(false);
-  const { width } = useResize();
-
-  useEffect(() => {
-    setIsPreviewVisible(width ? width >= 1024 : false);
-  }, [width]);
+  const { currentStep, handleStepNext, handleStepPrev } =
+    useBookFormNavigation(methods);
+  const isPreviewVisible = useBreakpointVisibility(1024);
 
   return (
     <Container>
@@ -29,7 +30,19 @@ export default function Home() {
           <div>
             현재 단계: {currentStep}/{LAST_STEP}
           </div>
-          {currentStep === 1 && <BasicInfo onNext={goToNext} />}
+          {currentStep === 1 && <BasicInfo onNext={() => handleStepNext(1)} />}
+          {currentStep === 2 && (
+            <BookEvaluation
+              onNext={() => handleStepNext(2)}
+              onPrev={() => handleStepPrev(2)}
+            />
+          )}
+          {currentStep === 3 && (
+            <Review
+              onNext={() => handleStepNext(3)}
+              onPrev={() => handleStepPrev(3)}
+            />
+          )}
         </FormSection>
 
         {isPreviewVisible && (

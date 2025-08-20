@@ -9,12 +9,12 @@ export function useStepNavigation() {
 
   useEffect(() => {
     if (router.isReady && !router.query.step) {
-      router.replace('/?step=1', undefined, { shallow: true });
+      router.replace('?step=1', undefined, { shallow: true });
     }
   }, [router.isReady, router.query.step, router]);
 
   const goToStep = (step: number) => {
-    router.push(`/?step=${step}`, undefined, { shallow: true });
+    router.push(`?step=${step}`, undefined, { shallow: true });
   };
 
   const goToNext = () => goToStep(currentStep + 1);
