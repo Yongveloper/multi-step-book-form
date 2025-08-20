@@ -9,6 +9,7 @@ import BookQuotes from '~/components/book-form/book-quotes';
 import { useBookFormNavigation } from '~/components/book-form/hooks/use-book-form-navigation';
 import Preview from '~/components/book-form/preview';
 import Review from '~/components/book-form/review';
+import { SwitchCases } from '~/components/shared/switch-cases';
 import {
   FORM_DEFAULT_VALUES,
   LAST_STEP,
@@ -41,19 +42,25 @@ export default function Home() {
           <div>
             현재 단계: {currentStep}/{LAST_STEP}
           </div>
-          {currentStep === 1 && <BasicInfo onNext={() => handleStepNext(1)} />}
-          {currentStep === 2 && (
-            <BookEvaluation
-              onNext={() => handleStepNext(2)}
-              onPrev={goToPrev}
-            />
-          )}
-          {currentStep === 3 && (
-            <Review onNext={() => handleStepNext(3)} onPrev={goToPrev} />
-          )}
-          {currentStep === 4 && (
-            <BookQuotes onNext={() => handleStepNext(4)} onPrev={goToPrev} />
-          )}
+          <SwitchCases
+            value={currentStep}
+            cases={{
+              1: <BasicInfo onNext={() => handleStepNext(1)} />,
+              2: (
+                <BookEvaluation
+                  onNext={() => handleStepNext(2)}
+                  onPrev={goToPrev}
+                />
+              ),
+              3: <Review onNext={() => handleStepNext(3)} onPrev={goToPrev} />,
+              4: (
+                <BookQuotes
+                  onNext={() => handleStepNext(4)}
+                  onPrev={goToPrev}
+                />
+              ),
+            }}
+          />
         </FormSection>
 
         {isPreviewVisible && (
