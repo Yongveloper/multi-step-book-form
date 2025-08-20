@@ -33,12 +33,12 @@ export default function Review({ onNext, onPrev }: IReviewProps) {
           {...register(FORM_FIELDS.REVIEW)}
           placeholder="독후감을 작성해주세요."
           rows={8}
-          aria-invalid={!!errors.review}
+          aria-invalid={errors.review !== undefined}
         />
         <ReviewInfo>
           <CharacterCount>{currentLength}자</CharacterCount>
         </ReviewInfo>
-        <Input.Description aria-invalid={!!errors.review}>
+        <Input.Description aria-invalid={errors.review !== undefined}>
           {errors.review?.message}
         </Input.Description>
       </Input.Group>

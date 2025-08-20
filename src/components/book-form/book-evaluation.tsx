@@ -48,7 +48,7 @@ export default function BookEvaluation({
         <Input.Label>추천 여부</Input.Label>
         <Select
           {...register(FORM_FIELDS.RECOMMENDATION)}
-          aria-invalid={!!errors.recommendation}
+          aria-invalid={errors.recommendation !== undefined}
         >
           {RECOMMENDATION_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -56,7 +56,7 @@ export default function BookEvaluation({
             </option>
           ))}
         </Select>
-        <Input.Description aria-invalid={!!errors.recommendation}>
+        <Input.Description aria-invalid={errors.recommendation !== undefined}>
           {errors.recommendation?.message}
         </Input.Description>
       </Input.Group>
@@ -81,7 +81,7 @@ export default function BookEvaluation({
             ))}
           </StarRating>
         </RatingContainer>
-        <Input.Description aria-invalid={!!errors.rating}>
+        <Input.Description aria-invalid={errors.rating !== undefined}>
           {errors.rating?.message}
         </Input.Description>
       </Input.Group>

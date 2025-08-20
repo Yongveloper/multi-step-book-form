@@ -49,9 +49,9 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
         <Input
           {...register(FORM_FIELDS.BOOK_TITLE)}
           type="text"
-          aria-invalid={!!errors.bookTitle}
+          aria-invalid={errors.bookTitle !== undefined}
         />
-        <Input.Description aria-invalid={!!errors.bookTitle}>
+        <Input.Description aria-invalid={errors.bookTitle !== undefined}>
           {errors.bookTitle?.message}
         </Input.Description>
       </Input.Group>
@@ -61,9 +61,9 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
         <Input
           {...register(FORM_FIELDS.AUTHOR)}
           type="text"
-          aria-invalid={!!errors.author}
+          aria-invalid={errors.author !== undefined}
         />
-        <Input.Description aria-invalid={!!errors.author}>
+        <Input.Description aria-invalid={errors.author !== undefined}>
           {errors.author?.message}
         </Input.Description>
       </Input.Group>
@@ -73,9 +73,9 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
         <Input
           {...register(FORM_FIELDS.PUBLISH_DATE)}
           type="date"
-          aria-invalid={!!errors.publishDate}
+          aria-invalid={errors.publishDate !== undefined}
         />
-        <Input.Description aria-invalid={!!errors.publishDate}>
+        <Input.Description aria-invalid={errors.publishDate !== undefined}>
           {errors.publishDate?.message}
         </Input.Description>
       </Input.Group>
@@ -87,9 +87,9 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
             valueAsNumber: true,
           })}
           type="number"
-          aria-invalid={!!errors.totalPages}
+          aria-invalid={errors.totalPages !== undefined}
         />
-        <Input.Description aria-invalid={!!errors.totalPages}>
+        <Input.Description aria-invalid={errors.totalPages !== undefined}>
           {errors.totalPages?.message}
         </Input.Description>
       </Input.Group>
@@ -98,7 +98,7 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
         <Input.Label>독서 상태</Input.Label>
         <Select
           {...register(FORM_FIELDS.READING_STATUS)}
-          aria-invalid={!!errors.readingStatus}
+          aria-invalid={errors.readingStatus !== undefined}
         >
           {READING_STATUS_OPTIONS.map(({ value, label }) => (
             <option key={value} value={value}>
@@ -106,7 +106,7 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
             </option>
           ))}
         </Select>
-        <Input.Description aria-invalid={!!errors.readingStatus}>
+        <Input.Description aria-invalid={errors.readingStatus !== undefined}>
           {errors.readingStatus?.message}
         </Input.Description>
       </Input.Group>
@@ -117,9 +117,9 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
           {...register(FORM_FIELDS.START_DATE)}
           type="date"
           disabled={shouldDisableStartDate}
-          aria-invalid={!!errors.startDate}
+          aria-invalid={errors.startDate !== undefined}
         />
-        <Input.Description aria-invalid={!!errors.startDate}>
+        <Input.Description aria-invalid={errors.startDate !== undefined}>
           {errors.startDate?.message}
         </Input.Description>
       </Input.Group>
@@ -130,9 +130,9 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
           {...register(FORM_FIELDS.END_DATE)}
           type="date"
           disabled={shouldDisableEndDate}
-          aria-invalid={!!errors.endDate}
+          aria-invalid={errors.endDate !== undefined}
         />
-        <Input.Description aria-invalid={!!errors.endDate}>
+        <Input.Description aria-invalid={errors.endDate !== undefined}>
           {errors.endDate?.message}
         </Input.Description>
       </Input.Group>

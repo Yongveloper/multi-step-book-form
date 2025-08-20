@@ -53,7 +53,7 @@ export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
               <Textarea
                 placeholder="인용구를 입력하세요."
                 {...register(`${FORM_FIELDS.QUOTES}.${index}.content`)}
-                aria-invalid={!!errors.quotes?.[index]?.content}
+                aria-invalid={errors.quotes?.[index]?.content !== undefined}
               />
               {errors.quotes?.[index]?.content && (
                 <ErrorMessage>
@@ -73,7 +73,7 @@ export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
                   {...register(`${FORM_FIELDS.QUOTES}.${index}.page`, {
                     valueAsNumber: true,
                   })}
-                  aria-invalid={!!errors.quotes?.[index]?.page}
+                  aria-invalid={errors.quotes?.[index]?.page !== undefined}
                 />
                 {errors.quotes?.[index]?.page && (
                   <ErrorMessage>
