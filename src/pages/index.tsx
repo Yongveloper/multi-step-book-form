@@ -29,7 +29,7 @@ export default function Home() {
     },
   );
 
-  const { currentStep, handleStepNext, handleStepPrev } =
+  const { currentStep, handleStepNext, goToPrev } =
     useBookFormNavigation(methods);
   const isPreviewVisible = useBreakpointVisibility(1024);
 
@@ -45,20 +45,14 @@ export default function Home() {
           {currentStep === 2 && (
             <BookEvaluation
               onNext={() => handleStepNext(2)}
-              onPrev={() => handleStepPrev(2)}
+              onPrev={goToPrev}
             />
           )}
           {currentStep === 3 && (
-            <Review
-              onNext={() => handleStepNext(3)}
-              onPrev={() => handleStepPrev(3)}
-            />
+            <Review onNext={() => handleStepNext(3)} onPrev={goToPrev} />
           )}
           {currentStep === 4 && (
-            <BookQuotes
-              onNext={() => handleStepNext(4)}
-              onPrev={() => handleStepPrev(4)}
-            />
+            <BookQuotes onNext={() => handleStepNext(4)} onPrev={goToPrev} />
           )}
         </FormSection>
 

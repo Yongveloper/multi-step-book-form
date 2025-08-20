@@ -1,9 +1,6 @@
 import { UseFormReturn } from 'react-hook-form';
 
-import {
-  FORM_DEFAULT_VALUES,
-  STEP_VALIDATION_FIELDS,
-} from '~/constants/book-form.constant';
+import { STEP_VALIDATION_FIELDS } from '~/constants/book-form.constant';
 import { useStepNavigation } from '~/hooks/use-step-navigation';
 import { BookFormData } from '~/schemas/book-form.schema';
 
@@ -28,17 +25,5 @@ export const useBookFormNavigation = (methods: UseFormReturn<BookFormData>) => {
     }
   };
 
-  const handleStepPrev = (step: keyof typeof STEP_VALIDATION_FIELDS) => {
-    const fieldsToReset = STEP_VALIDATION_FIELDS[step];
-
-    fieldsToReset.forEach((field) => {
-      methods.resetField(field, {
-        defaultValue: FORM_DEFAULT_VALUES[field],
-      });
-    });
-
-    goToPrev();
-  };
-
-  return { currentStep, handleStepNext, handleStepPrev };
+  return { currentStep, handleStepNext, goToPrev };
 };
