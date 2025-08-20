@@ -1,6 +1,5 @@
 import { useFieldArray } from 'react-hook-form';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { FORM_FIELDS } from '~/constants/book-form.constant';

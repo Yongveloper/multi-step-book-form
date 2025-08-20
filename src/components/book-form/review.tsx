@@ -1,9 +1,8 @@
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
 import { FORM_FIELDS } from '~/constants/book-form.constant';
-import { BookFormData } from '~/schemas/book-form.schema';
 
 import Button from '../shared/button';
 import Input from '../shared/input';

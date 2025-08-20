@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, get } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
@@ -84,7 +84,7 @@ function RHFInputField({ name, type, ...props }: IRHFInputProps) {
     <InputField
       {...register(name, registerOptions)}
       type={type}
-      aria-invalid={errors[name] !== undefined}
+      aria-invalid={get(errors, name) !== undefined}
       {...props}
     />
   );
@@ -99,7 +99,7 @@ function RHFTextareaField({ name, ...props }: IRHFTextareaProps) {
   return (
     <TextArea
       {...register(name)}
-      aria-invalid={errors[name] !== undefined}
+      aria-invalid={get(errors, name) !== undefined}
       {...props}
     />
   );
@@ -109,11 +109,11 @@ function RHFInputDescription({ name, children }: IRHFDescriptionProps) {
   const {
     formState: { errors },
   } = useFormContext();
-  const error = errors[name];
+  const error = get(errors, name);
   const errorMessage = error?.message ? String(error.message) : '';
 
   return (
-    <InputDescription aria-invalid={errors[name] !== undefined}>
+    <InputDescription aria-invalid={get(errors, name) !== undefined}>
       {children || errorMessage}
     </InputDescription>
   );

@@ -9,19 +9,14 @@ export const useBookFormNavigation = (methods: UseFormReturn<BookFormData>) => {
 
   const handleStepNext = async (step: keyof typeof STEP_VALIDATION_FIELDS) => {
     const fieldsToValidate = STEP_VALIDATION_FIELDS[step];
-    const isFormValid = await methods.trigger(fieldsToValidate);
+
+    const isFormValid = await methods.trigger(fieldsToValidate, {
+      shouldFocus: true,
+    });
 
     if (isFormValid) {
       goToNext();
       return;
-    }
-
-    const firstErrorField = fieldsToValidate.find(
-      (field) => field in methods.formState.errors,
-    );
-
-    if (firstErrorField) {
-      methods.setFocus(firstErrorField);
     }
   };
 
