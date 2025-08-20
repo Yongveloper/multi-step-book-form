@@ -37,11 +37,10 @@ export default function BookEvaluation({
     <Container>
       <h2>2단계 - 도서 평가</h2>
 
-      <Input
-        type="hidden"
-        {...register(FORM_FIELDS.RATING, {
-          valueAsNumber: true,
-        })}
+      <Input.RHFInput
+        name={FORM_FIELDS.RATING}
+        type="number"
+        style={{ display: 'none' }}
       />
 
       <Input.Group>

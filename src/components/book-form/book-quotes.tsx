@@ -1,9 +1,9 @@
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { FORM_FIELDS } from '~/constants/book-form.constant';
-import { BookFormData } from '~/schemas/book-form.schema';
 
 import Button from '../shared/button';
 import Input from '../shared/input';
@@ -14,11 +14,6 @@ interface IBookQuotesProps {
 }
 
 export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext<BookFormData>();
-
   const { fields, append, remove } = useFieldArray({
     name: FORM_FIELDS.QUOTES,
   });
@@ -50,16 +45,13 @@ export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
               <h4>
                 인용구 내용 <Required>*</Required>
               </h4>
-              <Textarea
+              <Input.RHFTextarea
+                name={`${FORM_FIELDS.QUOTES}.${index}.content`}
                 placeholder="인용구를 입력하세요."
-                {...register(`${FORM_FIELDS.QUOTES}.${index}.content`)}
-                aria-invalid={errors.quotes?.[index]?.content !== undefined}
               />
-              {errors.quotes?.[index]?.content && (
-                <ErrorMessage>
-                  {errors.quotes[index].content.message}
-                </ErrorMessage>
-              )}
+              <Input.RHFDescription
+                name={`${FORM_FIELDS.QUOTES}.${index}.content`}
+              />
             </div>
 
             {fields.length > 1 && (
@@ -67,19 +59,14 @@ export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
                 <h4>
                   페이지 번호 <Required>*</Required>
                 </h4>
-                <Input
+                <Input.RHFInput
+                  name={`${FORM_FIELDS.QUOTES}.${index}.page`}
                   type="number"
                   style={{ width: 100 }}
-                  {...register(`${FORM_FIELDS.QUOTES}.${index}.page`, {
-                    valueAsNumber: true,
-                  })}
-                  aria-invalid={errors.quotes?.[index]?.page !== undefined}
                 />
-                {errors.quotes?.[index]?.page && (
-                  <ErrorMessage>
-                    {errors.quotes[index].page.message}
-                  </ErrorMessage>
-                )}
+                <Input.RHFDescription
+                  name={`${FORM_FIELDS.QUOTES}.${index}.page`}
+                />
               </div>
             )}
           </Card>
@@ -129,26 +116,6 @@ const Top = styled.div`
   }
 `;
 
-const Textarea = styled.textarea`
-  width: 100%;
-  padding: 12px 16px;
-  border-radius: 8px;
-  border: 1px solid black;
-  resize: vertical;
-  font-family: inherit;
-  font-size: 14px;
-  line-height: 1.5;
-
-  &[aria-invalid='true'] {
-    border-color: red;
-  }
-
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-`;
-
 const AddQuoteButton = styled(Button)`
   width: 100%;
   margin-top: 16px;
@@ -160,10 +127,4 @@ const AddQuoteButton = styled(Button)`
 
 const Required = styled.span`
   color: red;
-`;
-
-const ErrorMessage = styled.div`
-  color: red;
-  font-size: 12px;
-  margin-top: 4px;
 `;

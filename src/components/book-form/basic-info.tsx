@@ -46,52 +46,29 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
 
       <Input.Group>
         <Input.Label>도서명</Input.Label>
-        <Input
-          {...register(FORM_FIELDS.BOOK_TITLE)}
-          type="text"
-          aria-invalid={errors.bookTitle !== undefined}
-        />
-        <Input.Description aria-invalid={errors.bookTitle !== undefined}>
-          {errors.bookTitle?.message}
-        </Input.Description>
+        <Input.RHFInput name={FORM_FIELDS.BOOK_TITLE} type="text" />
+        <Input.RHFDescription name={FORM_FIELDS.BOOK_TITLE} />
       </Input.Group>
 
       <Input.Group>
         <Input.Label>저자</Input.Label>
-        <Input
-          {...register(FORM_FIELDS.AUTHOR)}
-          type="text"
-          aria-invalid={errors.author !== undefined}
-        />
-        <Input.Description aria-invalid={errors.author !== undefined}>
-          {errors.author?.message}
-        </Input.Description>
+        <Input.RHFInput name={FORM_FIELDS.AUTHOR} type="text" />
+        <Input.RHFDescription name={FORM_FIELDS.AUTHOR} />
       </Input.Group>
 
       <Input.Group>
         <Input.Label>출판일</Input.Label>
-        <Input
-          {...register(FORM_FIELDS.PUBLISH_DATE)}
-          type="date"
-          aria-invalid={errors.publishDate !== undefined}
-        />
-        <Input.Description aria-invalid={errors.publishDate !== undefined}>
-          {errors.publishDate?.message}
-        </Input.Description>
+        <Input.RHFInput name={FORM_FIELDS.PUBLISH_DATE} type="date" />
+        <Input.RHFDescription name={FORM_FIELDS.PUBLISH_DATE} />
       </Input.Group>
 
       <Input.Group>
         <Input.Label>총 페이지 수</Input.Label>
-        <Input
-          {...register(FORM_FIELDS.TOTAL_PAGES, {
-            valueAsNumber: true,
-          })}
-          type="number"
-          aria-invalid={errors.totalPages !== undefined}
+        <Input.RHFInput 
+          name={FORM_FIELDS.TOTAL_PAGES} 
+          type="number" 
         />
-        <Input.Description aria-invalid={errors.totalPages !== undefined}>
-          {errors.totalPages?.message}
-        </Input.Description>
+        <Input.RHFDescription name={FORM_FIELDS.TOTAL_PAGES} />
       </Input.Group>
 
       <Input.Group>
@@ -113,28 +90,22 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
 
       <Input.Group>
         <Input.Label>독서 시작일</Input.Label>
-        <Input
-          {...register(FORM_FIELDS.START_DATE)}
+        <Input.RHFInput 
+          name={FORM_FIELDS.START_DATE}
           type="date"
           disabled={shouldDisableStartDate}
-          aria-invalid={errors.startDate !== undefined}
         />
-        <Input.Description aria-invalid={errors.startDate !== undefined}>
-          {errors.startDate?.message}
-        </Input.Description>
+        <Input.RHFDescription name={FORM_FIELDS.START_DATE} />
       </Input.Group>
 
       <Input.Group>
         <Input.Label>독서 종료일</Input.Label>
-        <Input
-          {...register(FORM_FIELDS.END_DATE)}
+        <Input.RHFInput 
+          name={FORM_FIELDS.END_DATE}
           type="date"
           disabled={shouldDisableEndDate}
-          aria-invalid={errors.endDate !== undefined}
         />
-        <Input.Description aria-invalid={errors.endDate !== undefined}>
-          {errors.endDate?.message}
-        </Input.Description>
+        <Input.RHFDescription name={FORM_FIELDS.END_DATE} />
       </Input.Group>
 
       <Button type="button" onClick={onNext}>
