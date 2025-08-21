@@ -7,8 +7,15 @@ import { BookFormData } from '~/schemas/book-form.schema';
 export const useBookFormNavigation = (methods: UseFormReturn<BookFormData>) => {
   const { currentStep, goToNext, goToPrev } = useStepNavigation();
 
-  const handleStepNext = async (step: keyof typeof STEP_VALIDATION_FIELDS) => {
-    const fieldsToValidate = STEP_VALIDATION_FIELDS[step];
+  const handleNext = async () => {
+    const fieldsToValidate =
+      STEP_VALIDATION_FIELDS[
+        currentStep as keyof typeof STEP_VALIDATION_FIELDS
+      ];
+
+    if (fieldsToValidate === undefined) {
+      return;
+    }
 
     const isFormValid = await methods.trigger(fieldsToValidate, {
       shouldFocus: true,
@@ -16,9 +23,12 @@ export const useBookFormNavigation = (methods: UseFormReturn<BookFormData>) => {
 
     if (isFormValid) {
       goToNext();
-      return;
     }
   };
 
-  return { currentStep, handleStepNext, goToPrev };
+  return {
+    currentStep,
+    handleNext,
+    handlePrev: goToPrev,
+  };
 };
