@@ -1,4 +1,4 @@
-import { useFieldArray } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
@@ -13,6 +13,7 @@ interface IBookQuotesProps {
 }
 
 export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
+  const { setValue } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     name: FORM_FIELDS.QUOTES,
   });
@@ -23,6 +24,9 @@ export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
 
   const handleRemoveQuote = (index: number) => {
     remove(index);
+    if (fields.length === 2) {
+      setValue(`${FORM_FIELDS.QUOTES}.0.page`, null);
+    }
   };
 
   return (
