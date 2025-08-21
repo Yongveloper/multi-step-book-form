@@ -61,6 +61,7 @@ export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
                 <Input.RHFInput
                   name={`${FORM_FIELDS.QUOTES}.${index}.page`}
                   type="number"
+                  inputMode="numeric"
                   style={{ width: 100 }}
                 />
                 <Input.RHFDescription

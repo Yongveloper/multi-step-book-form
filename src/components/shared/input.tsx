@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFormContext, get } from 'react-hook-form';
+import { get, useFormContext } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
@@ -71,7 +71,7 @@ interface IRHFDescriptionProps extends React.PropsWithChildren {
   name: string;
 }
 
-function RHFInputField({ name, type, ...props }: IRHFInputProps) {
+function RHFInputField({ name, type, inputMode, ...props }: IRHFInputProps) {
   const {
     register,
     formState: { errors },
@@ -84,6 +84,7 @@ function RHFInputField({ name, type, ...props }: IRHFInputProps) {
     <InputField
       {...register(name, registerOptions)}
       type={type}
+      inputMode={inputMode}
       aria-invalid={get(errors, name) !== undefined}
       {...props}
     />

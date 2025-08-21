@@ -64,9 +64,10 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
 
       <Input.Group>
         <Input.Label>총 페이지 수</Input.Label>
-        <Input.RHFInput 
-          name={FORM_FIELDS.TOTAL_PAGES} 
-          type="number" 
+        <Input.RHFInput
+          name={FORM_FIELDS.TOTAL_PAGES}
+          type="number"
+          inputMode="numeric"
         />
         <Input.RHFDescription name={FORM_FIELDS.TOTAL_PAGES} />
       </Input.Group>
@@ -90,7 +91,7 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
 
       <Input.Group>
         <Input.Label>독서 시작일</Input.Label>
-        <Input.RHFInput 
+        <Input.RHFInput
           name={FORM_FIELDS.START_DATE}
           type="date"
           disabled={shouldDisableStartDate}
@@ -100,7 +101,7 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
 
       <Input.Group>
         <Input.Label>독서 종료일</Input.Label>
-        <Input.RHFInput 
+        <Input.RHFInput
           name={FORM_FIELDS.END_DATE}
           type="date"
           disabled={shouldDisableEndDate}

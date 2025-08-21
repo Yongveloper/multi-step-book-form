@@ -36,7 +36,7 @@ export const bookFormSchema = z
       .array(
         z.object({
           content: z.string().min(1, '인용구를 입력해주세요'),
-          page: z.number().nullable(),
+          page: z.number('페이지 번호는 숫자만 입력 가능합니다').nullable(),
         }),
       )
       .optional(),
@@ -144,14 +144,14 @@ export const bookFormSchema = z
     },
   )
   .superRefine((data, ctx) => {
-    if (!data.quotes || data.quotes.length === 0) {
+    if (data.quotes === undefined || data.quotes.length === 0) {
       return;
     }
 
     const requiresPageValidation = data.quotes.length >= 2;
 
     data.quotes.forEach((quote, index) => {
-      if (requiresPageValidation && !quote.page) {
+      if (requiresPageValidation && quote.page === null) {
         ctx.addIssue({
           code: 'custom',
           message: '인용구가 2개 이상일 때는 페이지 번호를 입력해주세요',
@@ -160,16 +160,7 @@ export const bookFormSchema = z
         return;
       }
 
-      if (quote.page) {
-        if (!Number(quote.page)) {
-          ctx.addIssue({
-            code: 'custom',
-            message: '페이지 번호는 숫자만 입력 가능합니다',
-            path: [FORM_FIELDS.QUOTES, index, 'page'],
-          });
-          return;
-        }
-
+      if (quote.page !== null) {
         if (quote.page < 1) {
           ctx.addIssue({
             code: 'custom',
