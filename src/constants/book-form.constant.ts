@@ -1,5 +1,7 @@
 export const LAST_STEP = 5;
 
+export const STORAGE_KEY = 'book-form-data';
+
 export const BOOK_STATUS = {
   READING: 'reading',
   WANT_TO_READ: 'want_to_read',
@@ -23,6 +25,7 @@ export const FORM_FIELDS = {
   RECOMMENDATION: 'recommendation',
   RATING: 'rating',
   REVIEW: 'review',
+  QUOTES: 'quotes',
 } as const;
 
 export const READING_STATUS_OPTIONS = [
@@ -51,6 +54,7 @@ export const STEP_VALIDATION_FIELDS = {
   ],
   2: [FORM_FIELDS.RECOMMENDATION, FORM_FIELDS.RATING],
   3: [FORM_FIELDS.REVIEW],
+  4: [FORM_FIELDS.QUOTES],
 } as const;
 
 export const FORM_DEFAULT_VALUES = {
@@ -58,10 +62,11 @@ export const FORM_DEFAULT_VALUES = {
   [FORM_FIELDS.AUTHOR]: '',
   [FORM_FIELDS.PUBLISH_DATE]: '',
   [FORM_FIELDS.TOTAL_PAGES]: 0,
-  [FORM_FIELDS.READING_STATUS]: '',
+  [FORM_FIELDS.READING_STATUS]: READING_STATUS_OPTIONS[0].value,
   [FORM_FIELDS.START_DATE]: '',
   [FORM_FIELDS.END_DATE]: '',
-  [FORM_FIELDS.RECOMMENDATION]: '',
+  [FORM_FIELDS.RECOMMENDATION]: RECOMMENDATION_OPTIONS[0].value,
   [FORM_FIELDS.RATING]: 0,
   [FORM_FIELDS.REVIEW]: '',
-} as const;
+  [FORM_FIELDS.QUOTES]: [{ content: '', page: null }],
+};

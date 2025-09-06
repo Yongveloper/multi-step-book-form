@@ -9,6 +9,7 @@ import {
 import { BookFormData } from '~/schemas/book-form.schema';
 
 import Input from '../shared/input';
+import StepNavigationButtons from '../shared/step-navigation-buttons';
 
 interface IBookEvaluationProps {
   onNext: () => void;
@@ -36,11 +37,17 @@ export default function BookEvaluation({
     <Container>
       <h2>2단계 - 도서 평가</h2>
 
+      <Input.RHFInput
+        name={FORM_FIELDS.RATING}
+        type="number"
+        style={{ display: 'none' }}
+      />
+
       <Input.Group>
         <Input.Label>추천 여부</Input.Label>
         <Select
           {...register(FORM_FIELDS.RECOMMENDATION)}
-          aria-invalid={!!errors.recommendation}
+          aria-invalid={errors.recommendation !== undefined}
         >
           {RECOMMENDATION_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -48,7 +55,7 @@ export default function BookEvaluation({
             </option>
           ))}
         </Select>
-        <Input.Description aria-invalid={!!errors.recommendation}>
+        <Input.Description aria-invalid={errors.recommendation !== undefined}>
           {errors.recommendation?.message}
         </Input.Description>
       </Input.Group>
@@ -73,19 +80,12 @@ export default function BookEvaluation({
             ))}
           </StarRating>
         </RatingContainer>
-        <Input.Description aria-invalid={!!errors.rating}>
+        <Input.Description aria-invalid={errors.rating !== undefined}>
           {errors.rating?.message}
         </Input.Description>
       </Input.Group>
 
-      <ButtonContainer>
-        <Button type="button" onClick={onPrev} variant="secondary">
-          이전 단계
-        </Button>
-        <Button type="button" onClick={onNext}>
-          다음 단계
-        </Button>
-      </ButtonContainer>
+      <StepNavigationButtons onNext={onNext} onPrev={onPrev} />
     </Container>
   );
 }
@@ -124,7 +124,7 @@ const StarContainer = styled.div`
   width: 24px;
   height: 24px;
   font-size: 24px;
-  
+
   &::before {
     content: '★';
     position: absolute;
@@ -162,12 +162,12 @@ const StarButton = styled.button`
     width: 50%;
     z-index: 2;
     overflow: hidden;
-    
+
     &::before {
       left: 0;
       width: 200%;
     }
-    
+
     &:hover::before,
     &.active::before {
       opacity: 1;
@@ -178,35 +178,14 @@ const StarButton = styled.button`
     left: 0;
     width: 100%;
     z-index: 1;
-    
+
     &::before {
       left: 0;
     }
-    
+
     &:hover::before,
     &.active::before {
       opacity: 1;
     }
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 12px;
-  justify-content: space-between;
-`;
-
-const Button = styled.button<{ variant?: 'secondary' }>`
-  padding: 12px 24px;
-  background-color: ${(props) =>
-    props.variant === 'secondary' ? '#6c757d' : '#007bff'};
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  flex: 1;
-
-  &:hover {
-    opacity: 0.9;
   }
 `;

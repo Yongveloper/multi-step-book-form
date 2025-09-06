@@ -1,24 +1,36 @@
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import BasicInfo from '~/components/book-form/basic-info';
 import BookEvaluation from '~/components/book-form/book-evaluation';
+import BookQuotes from '~/components/book-form/book-quotes';
 import { useBookFormNavigation } from '~/components/book-form/hooks/use-book-form-navigation';
 import Preview from '~/components/book-form/preview';
 import Review from '~/components/book-form/review';
-import { FORM_DEFAULT_VALUES, LAST_STEP } from '~/constants/book-form.constant';
+import { SwitchCases } from '~/components/shared/switch-cases';
+import {
+  FORM_DEFAULT_VALUES,
+  LAST_STEP,
+  STORAGE_KEY,
+} from '~/constants/book-form.constant';
 import { useBreakpointVisibility } from '~/hooks/use-breakpoint-visibility';
+import { useFormWithPersistence } from '~/hooks/use-form-with-persistence';
 import { BookFormData, bookFormSchema } from '~/schemas/book-form.schema';
 
 export default function Home() {
-  const methods = useForm<BookFormData>({
-    resolver: zodResolver(bookFormSchema),
-    defaultValues: FORM_DEFAULT_VALUES,
-  });
+  const methods = useFormWithPersistence<BookFormData>(
+    {
+      resolver: zodResolver(bookFormSchema),
+      defaultValues: FORM_DEFAULT_VALUES,
+    },
+    {
+      storageKey: STORAGE_KEY,
+    },
+  );
 
-  const { currentStep, handleStepNext, handleStepPrev } =
+  const { currentStep, handleNext, handlePrev } =
     useBookFormNavigation(methods);
   const isPreviewVisible = useBreakpointVisibility(1024);
 
@@ -30,19 +42,25 @@ export default function Home() {
           <div>
             현재 단계: {currentStep}/{LAST_STEP}
           </div>
-          {currentStep === 1 && <BasicInfo onNext={() => handleStepNext(1)} />}
-          {currentStep === 2 && (
-            <BookEvaluation
-              onNext={() => handleStepNext(2)}
-              onPrev={() => handleStepPrev(2)}
-            />
-          )}
-          {currentStep === 3 && (
-            <Review
-              onNext={() => handleStepNext(3)}
-              onPrev={() => handleStepPrev(3)}
-            />
-          )}
+          <SwitchCases
+            value={currentStep}
+            cases={{
+              1: <BasicInfo onNext={handleNext} />,
+              2: (
+                <BookEvaluation
+                  onNext={handleNext}
+                  onPrev={handlePrev}
+                />
+              ),
+              3: <Review onNext={handleNext} onPrev={handlePrev} />,
+              4: (
+                <BookQuotes
+                  onNext={handleNext}
+                  onPrev={handlePrev}
+                />
+              ),
+            }}
+          />
         </FormSection>
 
         {isPreviewVisible && (

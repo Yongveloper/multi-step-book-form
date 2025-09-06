@@ -1,44 +1,34 @@
 import { UseFormReturn } from 'react-hook-form';
 
-import {
-  FORM_DEFAULT_VALUES,
-  STEP_VALIDATION_FIELDS,
-} from '~/constants/book-form.constant';
+import { STEP_VALIDATION_FIELDS } from '~/constants/book-form.constant';
 import { useStepNavigation } from '~/hooks/use-step-navigation';
 import { BookFormData } from '~/schemas/book-form.schema';
 
 export const useBookFormNavigation = (methods: UseFormReturn<BookFormData>) => {
   const { currentStep, goToNext, goToPrev } = useStepNavigation();
 
-  const handleStepNext = async (step: keyof typeof STEP_VALIDATION_FIELDS) => {
-    const fieldsToValidate = STEP_VALIDATION_FIELDS[step];
-    const isFormValid = await methods.trigger(fieldsToValidate);
+  const handleNext = async () => {
+    const fieldsToValidate =
+      STEP_VALIDATION_FIELDS[
+        currentStep as keyof typeof STEP_VALIDATION_FIELDS
+      ];
 
-    if (isFormValid) {
-      goToNext();
+    if (fieldsToValidate === undefined) {
       return;
     }
 
-    const firstErrorField = fieldsToValidate.find(
-      (field) => field in methods.formState.errors,
-    );
+    const isFormValid = await methods.trigger(fieldsToValidate, {
+      shouldFocus: true,
+    });
 
-    if (firstErrorField) {
-      methods.setFocus(firstErrorField);
+    if (isFormValid) {
+      goToNext();
     }
   };
 
-  const handleStepPrev = (step: keyof typeof STEP_VALIDATION_FIELDS) => {
-    const fieldsToReset = STEP_VALIDATION_FIELDS[step];
-
-    fieldsToReset.forEach((field) => {
-      methods.resetField(field, {
-        defaultValue: FORM_DEFAULT_VALUES[field],
-      });
-    });
-
-    goToPrev();
+  return {
+    currentStep,
+    handleNext,
+    handlePrev: goToPrev,
   };
-
-  return { currentStep, handleStepNext, handleStepPrev };
 };
