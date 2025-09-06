@@ -10,8 +10,8 @@ import {
 } from '~/constants/book-form.constant';
 import { BookFormData } from '~/schemas/book-form.schema';
 
-import Button from '../shared/button';
 import Input from '../shared/input';
+import StepNavigationButtons from '../shared/step-navigation-buttons';
 
 interface IBasicInfoProps {
   onNext: () => void;
@@ -109,9 +109,7 @@ export default function BasicInfo({ onNext }: IBasicInfoProps) {
         <Input.RHFDescription name={FORM_FIELDS.END_DATE} />
       </Input.Group>
 
-      <Button type="button" onClick={onNext}>
-        다음 단계
-      </Button>
+      <StepNavigationButtons onNext={onNext} showPrev={false} />
     </Container>
   );
 }

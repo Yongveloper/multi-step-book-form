@@ -8,8 +8,8 @@ import {
 } from '~/constants/book-form.constant';
 import { BookFormData } from '~/schemas/book-form.schema';
 
-import Button from '../shared/button';
 import Input from '../shared/input';
+import StepNavigationButtons from '../shared/step-navigation-buttons';
 
 interface IBookEvaluationProps {
   onNext: () => void;
@@ -85,14 +85,7 @@ export default function BookEvaluation({
         </Input.Description>
       </Input.Group>
 
-      <Button.Group>
-        <Button type="button" onClick={onPrev} variant="secondary">
-          이전 단계
-        </Button>
-        <Button type="button" onClick={onNext}>
-          다음 단계
-        </Button>
-      </Button.Group>
+      <StepNavigationButtons onNext={onNext} onPrev={onPrev} />
     </Container>
   );
 }

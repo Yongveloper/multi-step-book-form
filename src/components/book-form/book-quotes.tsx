@@ -6,6 +6,7 @@ import { FORM_FIELDS } from '~/constants/book-form.constant';
 
 import Button from '../shared/button';
 import Input from '../shared/input';
+import StepNavigationButtons from '../shared/step-navigation-buttons';
 
 interface IBookQuotesProps {
   onNext: () => void;
@@ -79,14 +80,7 @@ export default function BookQuotes({ onNext, onPrev }: IBookQuotesProps) {
 
       <AddQuoteButton onClick={handleAddQuote}>+ 인용구 추가</AddQuoteButton>
 
-      <Button.Group>
-        <Button type="button" onClick={onPrev} variant="secondary">
-          이전 단계
-        </Button>
-        <Button type="button" onClick={onNext}>
-          다음 단계
-        </Button>
-      </Button.Group>
+      <StepNavigationButtons onNext={onNext} onPrev={onPrev} />
     </div>
   );
 }
