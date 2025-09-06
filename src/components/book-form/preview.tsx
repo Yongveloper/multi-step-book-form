@@ -2,7 +2,7 @@ import { useWatch } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
-import { BOOK_STATUS } from '~/constants/book-form.constant';
+import { BOOK_STATUS, VISIBILITY } from '~/constants/book-form.constant';
 import { useDebounce } from '~/hooks/use-debounce';
 import { BookFormData } from '~/schemas/book-form.schema';
 
@@ -18,6 +18,28 @@ const getStatusText = (status: string) => {
       return '보류 중';
     default:
       return '상태 미설정';
+  }
+};
+
+const getVisibilityText = (visibility: string) => {
+  switch (visibility) {
+    case VISIBILITY.PUBLIC:
+      return '공개';
+    case VISIBILITY.PRIVATE:
+      return '비공개';
+    default:
+      return '미설정';
+  }
+};
+
+const getVisibilityIcon = (visibility: string) => {
+  switch (visibility) {
+    case VISIBILITY.PUBLIC:
+      return '🌐';
+    case VISIBILITY.PRIVATE:
+      return '🔒';
+    default:
+      return '❓';
   }
 };
 
@@ -89,6 +111,22 @@ export default function Preview() {
             </div>
           </Card>
         )}
+        <Card>
+          <div>
+            <h4>공개 설정</h4>
+            <VisibilityBadge visibility={debouncedFormData.visibility || ''}>
+              {getVisibilityIcon(debouncedFormData.visibility || '')}{' '}
+              {getVisibilityText(debouncedFormData.visibility || '')}
+            </VisibilityBadge>
+            <p>
+              {debouncedFormData.visibility === VISIBILITY.PUBLIC
+                ? '다른 사용자들이 내 독서 기록을 볼 수 있습니다'
+                : debouncedFormData.visibility === VISIBILITY.PRIVATE
+                  ? '나만 볼 수 있습니다'
+                  : '공개 여부를 선택하세요'}
+            </p>
+          </div>
+        </Card>
       </AppScreen>
     </Container>
   );
@@ -130,4 +168,20 @@ const Card = styled.div`
     padding: 2px 6px;
     border-radius: 4px;
   }
+`;
+
+const VisibilityBadge = styled.span<{ visibility: string }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  color: ${({ visibility }) =>
+    visibility === VISIBILITY.PUBLIC
+      ? '#1976d2'
+      : visibility === VISIBILITY.PRIVATE
+        ? '#f57c00'
+        : '#666'};
 `;

@@ -4,6 +4,7 @@ import {
   BOOK_STATUS,
   FORM_FIELDS,
   RECOMMENDATION,
+  VISIBILITY,
 } from '~/constants/book-form.constant';
 import { isDateAfter } from '~/utils/data';
 
@@ -40,6 +41,8 @@ export const bookFormSchema = z
         }),
       )
       .optional(),
+    [FORM_FIELDS.VISIBILITY]: z
+      .enum([...Object.values(VISIBILITY)] as const),
   })
   .refine(
     (data) => {

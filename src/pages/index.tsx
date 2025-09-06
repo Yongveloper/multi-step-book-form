@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import BasicInfo from '~/components/book-form/basic-info';
 import BookEvaluation from '~/components/book-form/book-evaluation';
 import BookQuotes from '~/components/book-form/book-quotes';
+import BookVisibility from '~/components/book-form/book-visibility';
+import Complete from '~/components/book-form/complete';
 import { useBookFormNavigation } from '~/components/book-form/hooks/use-book-form-navigation';
 import Preview from '~/components/book-form/preview';
 import Review from '~/components/book-form/review';
@@ -46,24 +48,16 @@ export default function Home() {
             value={currentStep}
             cases={{
               1: <BasicInfo onNext={handleNext} />,
-              2: (
-                <BookEvaluation
-                  onNext={handleNext}
-                  onPrev={handlePrev}
-                />
-              ),
+              2: <BookEvaluation onNext={handleNext} onPrev={handlePrev} />,
               3: <Review onNext={handleNext} onPrev={handlePrev} />,
-              4: (
-                <BookQuotes
-                  onNext={handleNext}
-                  onPrev={handlePrev}
-                />
-              ),
+              4: <BookQuotes onNext={handleNext} onPrev={handlePrev} />,
+              5: <BookVisibility onNext={handleNext} onPrev={handlePrev} />,
+              6: <Complete />,
             }}
           />
         </FormSection>
 
-        {isPreviewVisible && (
+        {isPreviewVisible && currentStep < 6 && (
           <PreviewSection>
             <Preview />
           </PreviewSection>

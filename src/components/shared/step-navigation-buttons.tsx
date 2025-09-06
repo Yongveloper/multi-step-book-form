@@ -9,7 +9,7 @@ interface IStepNavigationButtonsProps {
   showPrev: boolean;
 }
 
-function StepNavigationButtons({
+export default function StepNavigationButtons({
   onNext = () => {},
   onPrev = () => {},
   prevText = '이전 단계',
@@ -32,5 +32,3 @@ function StepNavigationButtons({
     </Button.Group>
   );
 }
-
-export default StepNavigationButtons;

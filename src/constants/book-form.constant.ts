@@ -1,4 +1,4 @@
-export const LAST_STEP = 5;
+export const LAST_STEP = 6;
 
 export const STORAGE_KEY = 'book-form-data';
 
@@ -14,6 +14,11 @@ export const RECOMMENDATION = {
   NO: 'no',
 } as const;
 
+export const VISIBILITY = {
+  PUBLIC: 'public',
+  PRIVATE: 'private',
+} as const;
+
 export const FORM_FIELDS = {
   BOOK_TITLE: 'bookTitle',
   AUTHOR: 'author',
@@ -26,6 +31,7 @@ export const FORM_FIELDS = {
   RATING: 'rating',
   REVIEW: 'review',
   QUOTES: 'quotes',
+  VISIBILITY: 'visibility',
 } as const;
 
 export const READING_STATUS_OPTIONS = [
@@ -42,6 +48,11 @@ export const RECOMMENDATION_OPTIONS = [
   { value: RECOMMENDATION.NO, label: '추천하지 않음' },
 ] as const;
 
+export const VISIBILITY_OPTIONS = [
+  { value: VISIBILITY.PUBLIC, label: '공개', description: '다른 사용자들이 내 독서 기록을 볼 수 있습니다' },
+  { value: VISIBILITY.PRIVATE, label: '비공개', description: '나만 볼 수 있습니다' },
+] as const;
+
 export const STEP_VALIDATION_FIELDS = {
   1: [
     FORM_FIELDS.BOOK_TITLE,
@@ -55,6 +66,7 @@ export const STEP_VALIDATION_FIELDS = {
   2: [FORM_FIELDS.RECOMMENDATION, FORM_FIELDS.RATING],
   3: [FORM_FIELDS.REVIEW],
   4: [FORM_FIELDS.QUOTES],
+  5: [FORM_FIELDS.VISIBILITY],
 } as const;
 
 export const FORM_DEFAULT_VALUES = {
@@ -69,4 +81,5 @@ export const FORM_DEFAULT_VALUES = {
   [FORM_FIELDS.RATING]: 0,
   [FORM_FIELDS.REVIEW]: '',
   [FORM_FIELDS.QUOTES]: [{ content: '', page: null }],
+  [FORM_FIELDS.VISIBILITY]: VISIBILITY_OPTIONS[0].value,
 };
