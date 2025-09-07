@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, useFormContext } from 'react-hook-form';
+import { Controller, get, useFormContext } from 'react-hook-form';
 
 import styled from '@emotion/styled';
 
@@ -71,18 +71,55 @@ interface IRHFDescriptionProps extends React.PropsWithChildren {
   name: string;
 }
 
+function CommaSeparatedInput({ name, ...props }: IRHFInputProps) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+
+  return (
+    <Controller
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <InputField
+          {...props}
+          type="text"
+          inputMode="numeric"
+          value={field.value ? field.value.toLocaleString('ko-KR') : ''}
+          aria-invalid={get(errors, name) !== undefined}
+          onChange={(e) => {
+            const { value } = e.target;
+
+            if (value === '') {
+              field.onChange(undefined);
+              return;
+            }
+
+            const onlyDigits = e.target.value.replace(/[^0-9]/g, '');
+            field.onChange(Number(onlyDigits));
+          }}
+          onBlur={field.onBlur}
+          ref={field.ref}
+        />
+      )}
+    />
+  );
+}
+
 function RHFInputField({ name, type, inputMode, ...props }: IRHFInputProps) {
   const {
     register,
     formState: { errors },
   } = useFormContext();
 
-  const registerOptions =
-    type === 'number' ? { valueAsNumber: true } : undefined;
+  if (type === 'number') {
+    return <CommaSeparatedInput name={name} {...props} />;
+  }
 
   return (
     <InputField
-      {...register(name, registerOptions)}
+      {...register(name)}
       type={type}
       inputMode={inputMode}
       aria-invalid={get(errors, name) !== undefined}
@@ -119,6 +156,7 @@ function RHFInputDescription({ name, children }: IRHFDescriptionProps) {
     </InputDescription>
   );
 }
+
 const Input = InputField as typeof InputField & {
   Group: typeof InputGroup;
   Label: typeof InputLabel;
